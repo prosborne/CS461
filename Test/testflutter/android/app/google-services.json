@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "390431044759",
+    "firebase_url": "https://mpulse-test-application.firebaseio.com",
+    "project_id": "mpulse-test-application",
+    "storage_bucket": "mpulse-test-application.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:390431044759:android:eaa4ed456c405cb28fa5d2",
+        "android_client_info": {
+          "package_name": "com.example.testflutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "390431044759-3vr6dmqafli6u9cvro7nvmkueepn4lrj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBl9PWpY5xJNWB2cQphiJ6wjgs0uXMV-qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "390431044759-3vr6dmqafli6u9cvro7nvmkueepn4lrj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
