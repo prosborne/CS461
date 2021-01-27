@@ -35,23 +35,25 @@ class _MyHomePage extends State<MyHomePage> {
 
   //Display data taken from firestore
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-    return Container(
+    return Card(
+      shadowColor: Colors.green,
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(padding: EdgeInsets.all(10)),
+          Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 15)),
           //Display description information
           Text(document['Description'],
               style: Theme.of(context).textTheme.headline6),
           Padding(padding: EdgeInsets.all(5)),
           //Display Latitude infomation
-          Container(
-            child: Align(
+          Row(
+            children:[ Align(
                 alignment: Alignment.topLeft,
                 // Used as a condtional statement
                 child: (document['Latitude'] == null)
                     ? Text('Missing Information')
                     : Text('Lat: ' + document['Latitude'].toString())),
-          ),
+            ]),
           //Display Longitude information
           Container(
             child: Align(
