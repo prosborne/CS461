@@ -51,7 +51,7 @@ class _MyTimerState extends State<MyTimer> {
                     Navigator.pop(context);
                   },
                   child: Icon(
-                    Icons.check,
+                    Icons.arrow_back_sharp,
                     color: Colors.black,
                   ),
                 ))
@@ -193,20 +193,43 @@ class _MyTimerState extends State<MyTimer> {
                       ),
                     ),
                     //Place Holder for Time to start again
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: RaisedButton(
+                          padding: const EdgeInsets.all(4),
+                          color: Colors.red,
+                          shape: const StadiumBorder(),
+                          onPressed: () async {
+                            _stopWatchTimer.setPresetTime(mSec: 0);
+                          },
+                          child: const Text(
+                            'Reset',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                       child: RaisedButton(
                         padding: const EdgeInsets.all(4),
-                        color: Colors.red,
+                        color: Colors.green,
                         shape: const StadiumBorder(),
                         onPressed: () async {
-                          _stopWatchTimer.setPresetTime(mSec: 0);
+                          //Do notification stuff here
+                          //************************** */
+                          //************************* */
+                          //************************ */
                         },
                         child: const Text(
-                          'Reset',
+                          'Submit',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
+                    ),
+                      ],
                     ),
                   ],
                 ),
