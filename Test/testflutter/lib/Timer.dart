@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-
-
 class MyTimer extends StatefulWidget {
   @override
   _MyTimerState createState() => _MyTimerState();
@@ -28,7 +26,6 @@ class _MyTimerState extends State<MyTimer> {
     _stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
     _stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
     _stopWatchTimer.records.listen((value) => print('records $value'));
-
   }
 
   @override
@@ -42,9 +39,12 @@ class _MyTimerState extends State<MyTimer> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Mpulse', style: TextStyle(color: Colors.red),),
-          backgroundColor: Color(0xFFE0E0E0),
-          leading: Padding(
+            title: const Text(
+              'Mpulse',
+              style: TextStyle(color: Colors.red),
+            ),
+            backgroundColor: Color(0xFFE0E0E0),
+            leading: Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
@@ -54,8 +54,7 @@ class _MyTimerState extends State<MyTimer> {
                     Icons.arrow_back_sharp,
                     color: Colors.black,
                   ),
-                ))
-        ),
+                ))),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +97,7 @@ class _MyTimerState extends State<MyTimer> {
                   },
                 ),
               ),
+
               /// Lap time.
               Container(
                 height: 120,
@@ -188,7 +188,6 @@ class _MyTimerState extends State<MyTimer> {
                               ),
                             ),
                           ),
-                          
                         ],
                       ),
                     ),
@@ -196,39 +195,39 @@ class _MyTimerState extends State<MyTimer> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: RaisedButton(
-                          padding: const EdgeInsets.all(4),
-                          color: Colors.red,
-                          shape: const StadiumBorder(),
-                          onPressed: () async {
-                            _stopWatchTimer.setPresetTime(mSec: 0);
-                          },
-                          child: const Text(
-                            'Reset',
-                            style: TextStyle(color: Colors.white),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: RaisedButton(
+                            padding: const EdgeInsets.all(4),
+                            color: Colors.red,
+                            shape: const StadiumBorder(),
+                            onPressed: () async {
+                              _stopWatchTimer.setPresetTime(mSec: 0);
+                            },
+                            child: const Text(
+                              'Reset',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: RaisedButton(
-                        padding: const EdgeInsets.all(4),
-                        color: Colors.green,
-                        shape: const StadiumBorder(),
-                        onPressed: () async {
-                          //Do notification stuff here
-                          //************************** */
-                          //************************* */
-                          //************************ */
-                        },
-                        child: const Text(
-                          'Submit',
-                          style: TextStyle(color: Colors.white),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: RaisedButton(
+                            padding: const EdgeInsets.all(4),
+                            color: Colors.green,
+                            shape: const StadiumBorder(),
+                            onPressed: () async {
+                              //Do notification stuff here
+                              //************************** */
+                              //************************* */
+                              //************************ */
+                            },
+                            child: const Text(
+                              'Submit',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                       ],
                     ),
                   ],
