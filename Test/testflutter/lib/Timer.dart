@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
+import 'package:overlay_support/overlay_support.dart';
 
 class MyTimer extends StatefulWidget {
   @override
@@ -36,7 +37,8 @@ class _MyTimerState extends State<MyTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return OverlaySupport(
+        child: MaterialApp(
       home: Scaffold(
         appBar: AppBar(
             title: const Text(
@@ -217,10 +219,30 @@ class _MyTimerState extends State<MyTimer> {
                             color: Colors.green,
                             shape: const StadiumBorder(),
                             onPressed: () async {
-                              //Do notification stuff here
-                              //************************** */
-                              //************************* */
-                              //************************ */
+                              showOverlayNotification((context) {
+                                return Card(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  child: SafeArea(
+                                    child: ListTile(
+                                      leading: SizedBox.fromSize(
+                                          size: const Size(40, 40),
+                                          child: ClipOval(
+                                              child: Image.asset(
+                                                  "images/logo.jpg"))),
+                                      title: Text('Work Order Submitted'),
+                                      subtitle: Text(
+                                          'Unassigned Work Orders Available.'),
+                                      trailing: IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            OverlaySupportEntry.of(context)
+                                                .dismiss();
+                                          }),
+                                    ),
+                                  ),
+                                );
+                              }, duration: Duration(milliseconds: 4000));
                             },
                             child: const Text(
                               'Submit',
@@ -237,6 +259,6 @@ class _MyTimerState extends State<MyTimer> {
           ),
         ),
       ),
-    );
+    ));
   }
 }
