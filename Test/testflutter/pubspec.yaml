@@ -28,13 +28,9 @@ dependencies:
   floating_search_bar: ^0.3.0
   flutter_search_bar: ^2.1.0
   stop_watch_timer:
-<<<<<<< HEAD
+  overlay_support: ^1.0.5
   firebase_messaging: 
   flutter_conditional_rendering: ^1.1.1
-=======
-  overlay_support: ^1.0.5
-  
->>>>>>> b3ae99e69a8d58bc79a20c5b3b2ac3ece9d82c80
   flutter:
     sdk: flutter
 
