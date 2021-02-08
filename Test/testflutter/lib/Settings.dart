@@ -61,6 +61,15 @@ class _SettingsPage extends State<SettingsPage> {
                 style: Theme.of(context).textTheme.headline6),
           ),
             Padding(padding: EdgeInsets.all(5)),
+          Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 15)),
+          //Display description information
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text('Interval: ' + document['Interval'].toString(),
+                textAlign: TextAlign.left,
+                style: Theme.of(context).textTheme.headline6),
+          ),
+            Padding(padding: EdgeInsets.all(5)),
           
         ],
       ),

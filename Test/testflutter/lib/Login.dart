@@ -22,7 +22,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final double controlHeight = 50.0;
   final double controlWidth = 350.0;
 
-  String username = '';
+
+  String username = 'Branden';
   String password = '';
   String errorText = '';
 
@@ -32,7 +33,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 void click() {
-  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+  String user = 'Branden';
+  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(user: user)));
 }
 
   @override
