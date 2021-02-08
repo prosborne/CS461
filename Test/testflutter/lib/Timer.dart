@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
-
-
+import 'package:overlay_support/overlay_support.dart';
 
 class MyTimer extends StatefulWidget {
   @override
@@ -28,7 +27,6 @@ class _MyTimerState extends State<MyTimer> {
     _stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
     _stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
     _stopWatchTimer.records.listen((value) => print('records $value'));
-
   }
 
   @override
@@ -39,12 +37,16 @@ class _MyTimerState extends State<MyTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return OverlaySupport(
+        child: MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Mpulse', style: TextStyle(color: Colors.red),),
-          backgroundColor: Color(0xFFE0E0E0),
-          leading: Padding(
+            title: const Text(
+              'Mpulse',
+              style: TextStyle(color: Colors.red),
+            ),
+            backgroundColor: Color(0xFFE0E0E0),
+            leading: Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () {
@@ -54,8 +56,7 @@ class _MyTimerState extends State<MyTimer> {
                     Icons.arrow_back_sharp,
                     color: Colors.black,
                   ),
-                ))
-        ),
+                ))),
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -98,6 +99,7 @@ class _MyTimerState extends State<MyTimer> {
                   },
                 ),
               ),
+
               /// Lap time.
               Container(
                 height: 120,
@@ -188,7 +190,6 @@ class _MyTimerState extends State<MyTimer> {
                               ),
                             ),
                           ),
-                          
                         ],
                       ),
                     ),
@@ -196,39 +197,59 @@ class _MyTimerState extends State<MyTimer> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: RaisedButton(
-                          padding: const EdgeInsets.all(4),
-                          color: Colors.red,
-                          shape: const StadiumBorder(),
-                          onPressed: () async {
-                            _stopWatchTimer.setPresetTime(mSec: 0);
-                          },
-                          child: const Text(
-                            'Reset',
-                            style: TextStyle(color: Colors.white),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: RaisedButton(
+                            padding: const EdgeInsets.all(4),
+                            color: Colors.red,
+                            shape: const StadiumBorder(),
+                            onPressed: () async {
+                              _stopWatchTimer.setPresetTime(mSec: 0);
+                            },
+                            child: const Text(
+                              'Reset',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: RaisedButton(
-                        padding: const EdgeInsets.all(4),
-                        color: Colors.green,
-                        shape: const StadiumBorder(),
-                        onPressed: () async {
-                          //Do notification stuff here
-                          //************************** */
-                          //************************* */
-                          //************************ */
-                        },
-                        child: const Text(
-                          'Submit',
-                          style: TextStyle(color: Colors.white),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 4),
+                          child: RaisedButton(
+                            padding: const EdgeInsets.all(4),
+                            color: Colors.green,
+                            shape: const StadiumBorder(),
+                            onPressed: () async {
+                              showOverlayNotification((context) {
+                                return Card(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  child: SafeArea(
+                                    child: ListTile(
+                                      leading: SizedBox.fromSize(
+                                          size: const Size(40, 40),
+                                          child: ClipOval(
+                                              child: Image.asset(
+                                                  "images/logo.jpg"))),
+                                      title: Text('Work Order Submitted'),
+                                      subtitle: Text(
+                                          'Unassigned Work Orders Available.'),
+                                      trailing: IconButton(
+                                          icon: Icon(Icons.close),
+                                          onPressed: () {
+                                            OverlaySupportEntry.of(context)
+                                                .dismiss();
+                                          }),
+                                    ),
+                                  ),
+                                );
+                              }, duration: Duration(milliseconds: 4000));
+                            },
+                            child: const Text(
+                              'Submit',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
                       ],
                     ),
                   ],
@@ -238,6 +259,6 @@ class _MyTimerState extends State<MyTimer> {
           ),
         ),
       ),
-    );
+    ));
   }
 }
