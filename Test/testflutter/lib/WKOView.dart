@@ -36,16 +36,16 @@ class WKOView extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
+                title: Text('ID#:', style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text('   $id'),
+              ),
+              ListTile(
                 title: Text('Description:', style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('   $descript'),
               ),
               ListTile(
                 title: Text('Due Date:', style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text('   $timedue'),
-              ),
-              ListTile(
-                title: Text('ID:', style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('   $id'),
               ),
               ListTile(
                 title: Text('Priority:', style: TextStyle(fontWeight: FontWeight.bold)),

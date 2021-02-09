@@ -144,33 +144,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             subtitle: Text(document['Description'].toString(),
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             leading: IconButton(
-                              icon: Icon(Icons.explore),
+                              icon: Icon(Icons.remove_red_eye),
                               color: Colors.black,
-                              
-                            onPressed: () {
-                              //Set assets to pushed to next screen
-                              Temp.assets = document['Asset'].toString();
-                              Temp.descript =
-                                  document['Description'].toString();
-                              Temp.timedue = document['Due'].toDate();
-                              Temp.id = document['ID'].toString();
-                              Temp.prio = document['Priority'].toString();
-                              Temp.type = document['Type'].toString();
-                              Temp.person =
-                                  document['Personnel'].toString();
-                              //Push to next screen for selected WKO
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => WKOView(
-                                          assets: Temp.assets,
-                                          descript: Temp.descript,
-                                          timedue: Temp.timedue,
-                                          id: Temp.id,
-                                          prio: Temp.prio,
-                                          type: Temp.type,
-                                          person: Temp.person)));
-                            },
+                                onPressed: () {
+                                  //Set assets to pushed to next screen
+                                  Temp.assets = document['Asset'].toString();
+                                  Temp.descript =
+                                      document['Description'].toString();
+                                  Temp.timedue = document['Due'].toDate();
+                                  Temp.id = document['ID'].toString();
+                                  Temp.prio = document['Priority'].toString();
+                                  Temp.type = document['Type'].toString();
+                                  Temp.person =
+                                      document['Personnel'].toString();
+                                  //Push to next screen for selected WKO
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => WKOView(
+                                              assets: Temp.assets,
+                                              descript: Temp.descript,
+                                              timedue: Temp.timedue,
+                                              id: Temp.id,
+                                              prio: Temp.prio,
+                                              type: Temp.type,
+                                              person: Temp.person)));
+                                },
                              ),
                             trailing: IconButton(
                               icon: Icon(Icons.add, color: Colors.black),
@@ -185,6 +184,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                               child: ListTile(
                             title: Text('This shouldnt be here :(',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
+                            leading: IconButton(
+                              icon: Icon(Icons.remove_red_eye),
+                              color: Colors.black,
+                                onPressed: () {
+                                  
+                                },
+                             ),
                           ));
                       },
                       fallbackBuilder: (BuildContext context) {
