@@ -137,15 +137,6 @@ class _HomeScreenState extends State<HomeScreen>
                       conditionBuilder: (BuildContext context) => true == true,
                       widgetBuilder: (BuildContext context) {
                         DayObject._timestamp = document['Due'].toDate();
-                        // if (((DayObject._weekahead.day) -
-                        //             (DayObject._timestamp.day) <
-                        //         7) ||
-                        //     ((DayObject._weekahead.month !=
-                        //             DayObject._timestamp.month) &&
-                        //         ((DayObject._weekahead.day) -
-                        //                 (DayObject._timestamp.day) <
-                        //             0)) ||
-                        //     (DayObject._timestamp.day) == 13) {
                         if ((DayObject._timestamp.month == DayObject._today.month) && (DayObject._timestamp.day == DayObject._today.day)) {
                           return Container(
                               child: ListTile(
