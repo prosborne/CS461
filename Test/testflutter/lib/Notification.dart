@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
+
+
 
 class NotificationScreen extends StatefulWidget {
   @override
@@ -28,32 +32,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     color: Colors.black,
                   ),
                 ))),
-        body: ListView(
-          // This next line does the trick.
-          scrollDirection: Axis.vertical,
-          children: <Widget>[
-            Padding(padding: EdgeInsets.only(bottom: 10.0),
-            child: Card(
-              child: Column(
-                children: [
-                  ListTile(
-                    trailing: 
-                    IconButton(
-                        icon: Icon(Icons.add, color: Colors.black),
-                        tooltip: 'Add WKO',
-                      onPressed: () {
-                        _showMyDialog();
-                      },
-                    ),
-                    title: Text('Insert Notification Here')
-                  )
-                ],
-              )
-            ),
-            ),
-            
-          ],
-        ));
+        body: _unassignedWKO()
+        );
   }
 
 
@@ -85,6 +65,62 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ],
       );
     },
-  );
-}
+    );
+  }
+
+  Widget _unassignedWKO(){
+  
+    
+  return ListView(
+          // This next line does the trick.
+          scrollDirection: Axis.vertical,
+          children: <Widget>[
+            Padding(padding: EdgeInsets.only(bottom: 10.0),
+            child: Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    trailing: 
+                    IconButton(
+                        icon: Icon(Icons.add, color: Colors.black),
+                        tooltip: 'Add WKO',
+                      onPressed: () {
+                        _showMyDialog();
+                      },
+                    ),
+                    title: Text('Insert Notification Here')
+                  )
+                ],
+              )
+            ),
+            ),
+            Padding(padding: EdgeInsets.only(bottom: 10.0),
+            child: Card(
+              child: Column(
+                children: [
+                  ListTile(
+                    trailing: 
+                    IconButton(
+                        icon: Icon(Icons.add, color: Colors.black),
+                        tooltip: 'Add WKO',
+                      onPressed: () {
+                        _showMyDialog();
+                      },
+                    ),
+                    title: Text('Insert Notification Here')
+                  )
+                ],
+              )
+            ),
+            ),
+            
+          ],
+        );
+  }
+
+
+  Widget _unassignedWKOagain(){
+    
+    
+  }
 }

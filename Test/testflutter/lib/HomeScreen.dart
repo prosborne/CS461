@@ -7,7 +7,7 @@ import 'package:testflutter/WKOView.dart';
 import 'package:testflutter/Timer.dart';
 import 'package:testflutter/Notification.dart';
 
-class Checker{
+class Checker {
   static String check = '';
 }
 
@@ -104,58 +104,124 @@ class _HomeScreenState extends State<HomeScreen>
         controller: _controller,
         children: [
           Center(child: _dailyWKO()),
-          Center(child: Text('Display only Weekly WKO')),
-          Center(child: Text('Display only Monthly WKO')),
+          Center(child: _weekWKO()),
+          Center(child: _monthlyWKO()),
         ],
       ),
     );
   }
 
-  //Daily Work Order Function
-  Widget _dailyWKO() {
-    // print(DayObject._today.year);
-    // print(DayObject._today.day);
-    // print(Text('here'));
-    // print(DayObject._weekahead.day);
 
+//Daily Work Order Function
+  Widget _dailyWKO() {
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
-            
             DayObject._timestamp = document['Due'].toDate();
             //if(((DayObject._weekahead.day) - (DayObject._timestamp.day)) < 7) {
-              if(DayObject._timestamp.month == 4){
+            if (DayObject._timestamp.month == 4) {
               Checker.check = 'Yes';
-            }
-            else{
+            } else {
               Checker.check = 'No';
             }
             return new ListTile(
-              onTap: () {
-                //Set values to pass to page showing details of clicked WKO
-                Temp.assets = document['Asset'].toString();
-                Temp.descript = document['Description'].toString();
-                Temp.timedue = document['Due'].toDate();
-                Temp.id = document['ID'].toString();
-                Temp.prio = document['Priority'].toString();
-                Temp.type = document['Type'].toString();
-                Temp.person = document['Personnel'].toString();
-                //Push to next screen for selected WKO
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => WKOView(
-                            assets: Temp.assets,
-                            descript: Temp.descript,
-                            timedue: Temp.timedue,
-                            id: Temp.id,
-                            prio: Temp.prio,
-                            type: Temp.type,
-                            person: Temp.person)));
-              },
+              //Display appropriate WKO for day, week, month tab view
+              title: Card(
+                  child: Column(
+                children: [
+                  Conditional.single(
+                      context: context,
+                      conditionBuilder: (BuildContext context) => true == true,
+                      widgetBuilder: (BuildContext context) {
+                        DayObject._timestamp = document['Due'].toDate();
+                        // if (((DayObject._weekahead.day) -
+                        //             (DayObject._timestamp.day) <
+                        //         7) ||
+                        //     ((DayObject._weekahead.month !=
+                        //             DayObject._timestamp.month) &&
+                        //         ((DayObject._weekahead.day) -
+                        //                 (DayObject._timestamp.day) <
+                        //             0)) ||
+                        //     (DayObject._timestamp.day) == 13) {
+                        if ((DayObject._timestamp.month == DayObject._today.month) && (DayObject._timestamp.day == DayObject._today.day)) {
+                          return Container(
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.arrow_right),
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    //Set assets to pushed to next screen
+                                    Temp.assets = document['Asset'].toString();
+                                    Temp.descript =
+                                        document['Description'].toString();
+                                    Temp.timedue = document['Due'].toDate();
+                                    Temp.id = document['ID'].toString();
+                                    Temp.prio = document['Priority'].toString();
+                                    Temp.type = document['Type'].toString();
+                                    Temp.person =
+                                        document['Personnel'].toString();
+                                    //Push to next screen for selected WKO
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WKOView(
+                                                assets: Temp.assets,
+                                                descript: Temp.descript,
+                                                timedue: Temp.timedue,
+                                                id: Temp.id,
+                                                prio: Temp.prio,
+                                                type: Temp.type,
+                                                person: Temp.person)));
+                                  },
+                                ),
+                              ));
+                        } else
+                          return Container(
+
+                              child: ListTile(
+                                title: Text('This shouldnt be here :(',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                ));
+                      },
+                      fallbackBuilder: (BuildContext context) {
+                        return Text('hey');
+                      }),
+                ],
+              )),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+//Weekly Work Order Function
+  Widget _weekWKO() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return new ListView(
+          children: snapshot.data.docs.map((DocumentSnapshot document) {
+            DayObject._timestamp = document['Due'].toDate();
+            //if(((DayObject._weekahead.day) - (DayObject._timestamp.day)) < 7) {
+            if (DayObject._timestamp.month == 4) {
+              Checker.check = 'Yes';
+            } else {
+              Checker.check = 'No';
+            }
+            return new ListTile(
               //Display appropriate WKO for day, week, month tab view
               title: Card(
                   child: Column(
@@ -174,11 +240,211 @@ class _HomeScreenState extends State<HomeScreen>
                         //                 (DayObject._timestamp.day) <
                         //             0)) ||
                         //     (DayObject._timestamp.day) == 13) {
-                        if(Checker.check == 'Yes'){
-                          return Card(
-                              child: Text(document['Asset'].toString()));
+                        if (Checker.check == 'Yes') {
+                          return Container(
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.arrow_right),
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    //Set assets to pushed to next screen
+                                    Temp.assets = document['Asset'].toString();
+                                    Temp.descript =
+                                        document['Description'].toString();
+                                    Temp.timedue = document['Due'].toDate();
+                                    Temp.id = document['ID'].toString();
+                                    Temp.prio = document['Priority'].toString();
+                                    Temp.type = document['Type'].toString();
+                                    Temp.person =
+                                        document['Personnel'].toString();
+                                    //Push to next screen for selected WKO
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WKOView(
+                                                assets: Temp.assets,
+                                                descript: Temp.descript,
+                                                timedue: Temp.timedue,
+                                                id: Temp.id,
+                                                prio: Temp.prio,
+                                                type: Temp.type,
+                                                person: Temp.person)));
+                                  },
+                                ),
+                              ));
                         } else
-                          return Text('0');
+                          return Container(
+
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.arrow_right),
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    //Set assets to pushed to next screen
+                                    Temp.assets = document['Asset'].toString();
+                                    Temp.descript =
+                                        document['Description'].toString();
+                                    Temp.timedue = document['Due'].toDate();
+                                    Temp.id = document['ID'].toString();
+                                    Temp.prio = document['Priority'].toString();
+                                    Temp.type = document['Type'].toString();
+                                    Temp.person =
+                                        document['Personnel'].toString();
+                                    //Push to next screen for selected WKO
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WKOView(
+                                                assets: Temp.assets,
+                                                descript: Temp.descript,
+                                                timedue: Temp.timedue,
+                                                id: Temp.id,
+                                                prio: Temp.prio,
+                                                type: Temp.type,
+                                                person: Temp.person)));
+                                  },
+                                ),
+                              ));
+                      },
+                      fallbackBuilder: (BuildContext context) {
+                        return Text('hey');
+                      }),
+                ],
+              )),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
+
+//Monthly Work Order Function
+  Widget _monthlyWKO() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return new ListView(
+          children: snapshot.data.docs.map((DocumentSnapshot document) {
+            DayObject._timestamp = document['Due'].toDate();
+            //if(((DayObject._weekahead.day) - (DayObject._timestamp.day)) < 7) {
+            if (DayObject._timestamp.month == 4) {
+              Checker.check = 'Yes';
+            } else {
+              Checker.check = 'No';
+            }
+            return new ListTile(
+              //Display appropriate WKO for day, week, month tab view
+              title: Card(
+                  child: Column(
+                children: [
+                  Conditional.single(
+                      context: context,
+                      conditionBuilder: (BuildContext context) => true == true,
+                      widgetBuilder: (BuildContext context) {
+                        //DayObject._timestamp = document['Due'].toDate();
+                        // if (((DayObject._weekahead.day) -
+                        //             (DayObject._timestamp.day) <
+                        //         7) ||
+                        //     ((DayObject._weekahead.month !=
+                        //             DayObject._timestamp.month) &&
+                        //         ((DayObject._weekahead.day) -
+                        //                 (DayObject._timestamp.day) <
+                        //             0)) ||
+                        //     (DayObject._timestamp.day) == 13) {
+                        if (Checker.check == 'Yes') {
+                          return Container(
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.arrow_right),
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    //Set assets to pushed to next screen
+                                    Temp.assets = document['Asset'].toString();
+                                    Temp.descript =
+                                        document['Description'].toString();
+                                    Temp.timedue = document['Due'].toDate();
+                                    Temp.id = document['ID'].toString();
+                                    Temp.prio = document['Priority'].toString();
+                                    Temp.type = document['Type'].toString();
+                                    Temp.person =
+                                        document['Personnel'].toString();
+                                    //Push to next screen for selected WKO
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WKOView(
+                                                assets: Temp.assets,
+                                                descript: Temp.descript,
+                                                timedue: Temp.timedue,
+                                                id: Temp.id,
+                                                prio: Temp.prio,
+                                                type: Temp.type,
+                                                person: Temp.person)));
+                                  },
+                                ),
+                              ));
+                        } else
+                          return Container(
+
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.arrow_right),
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    //Set assets to pushed to next screen
+                                    Temp.assets = document['Asset'].toString();
+                                    Temp.descript =
+                                        document['Description'].toString();
+                                    Temp.timedue = document['Due'].toDate();
+                                    Temp.id = document['ID'].toString();
+                                    Temp.prio = document['Priority'].toString();
+                                    Temp.type = document['Type'].toString();
+                                    Temp.person =
+                                        document['Personnel'].toString();
+                                    //Push to next screen for selected WKO
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WKOView(
+                                                assets: Temp.assets,
+                                                descript: Temp.descript,
+                                                timedue: Temp.timedue,
+                                                id: Temp.id,
+                                                prio: Temp.prio,
+                                                type: Temp.type,
+                                                person: Temp.person)));
+                                  },
+                                ),
+                              ));
                       },
                       fallbackBuilder: (BuildContext context) {
                         return Text('hey');
@@ -244,5 +510,4 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  Widget _checkday() {}
 }

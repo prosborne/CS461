@@ -17,7 +17,8 @@ class WKOView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('$assets'),
+        title: Text('$assets', style: TextStyle(color: Colors.black)),
+        backgroundColor: Color(0xFFE0E0E0),
         leading: GestureDetector(
                   onTap: () {
                     Navigator.pop(context);

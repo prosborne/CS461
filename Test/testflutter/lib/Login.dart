@@ -12,6 +12,8 @@ class AlwaysDisabledFocusNode extends FocusNode {
 
 
 
+
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -23,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final double controlWidth = 350.0;
 
 
-  String username = 'Branden';
+  //String username = 'Branden';
   String password = '';
   String errorText = '';
 
