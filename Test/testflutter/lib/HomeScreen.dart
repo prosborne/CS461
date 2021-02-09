@@ -132,19 +132,8 @@ class _HomeScreenState extends State<HomeScreen>
                       widgetBuilder: (BuildContext context) {
                         DayObject._timestamp = document['Due'].toDate();
                         if ((DayObject._timestamp.month == DayObject._today.month) && (DayObject._timestamp.day == DayObject._today.day)) {
-                          return Container(
-                              child: ListTile(
-                                title: Text(document['ID'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                    document['Description'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.remove_red_eye),
-                                  color: Colors.black,
-                                  onPressed: () {
+                          return GestureDetector(
+                            onTap: () {
                                     //Set assets to pushed to next screen
                                     Temp.assets = document['Asset'].toString();
                                     Temp.descript =
@@ -167,7 +156,18 @@ class _HomeScreenState extends State<HomeScreen>
                                                 prio: Temp.prio,
                                                 type: Temp.type,
                                                 person: Temp.person)));
-                                  },
+                                  }, 
+                          child: Container(
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                
+                                  
                                 ),
                               ));
                         } else
@@ -228,19 +228,8 @@ class _HomeScreenState extends State<HomeScreen>
                           check = true;
                         }
                         if (check == true) {
-                          return Container(
-                              child: ListTile(
-                                title: Text(document['ID'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                    document['Description'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.remove_red_eye),
-                                  color: Colors.black,
-                                  onPressed: () {
+                          return GestureDetector(
+                          onTap: () {
                                     //Set assets to pushed to next screen
                                     Temp.assets = document['Asset'].toString();
                                     Temp.descript =
@@ -264,6 +253,17 @@ class _HomeScreenState extends State<HomeScreen>
                                                 type: Temp.type,
                                                 person: Temp.person)));
                                   },
+                          child: Container(
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                
+                                  
                                 ),
                               ));
                         } else
@@ -314,19 +314,8 @@ class _HomeScreenState extends State<HomeScreen>
                           check = false;
                         }
                         if (check == true) {
-                          return Container(
-                              child: ListTile(
-                                title: Text(document['ID'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                    document['Description'].toString(),
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.remove_red_eye),
-                                  color: Colors.black,
-                                  onPressed: () {
+                          return GestureDetector(
+                            onTap: () {
                                     //Set assets to pushed to next screen
                                     Temp.assets = document['Asset'].toString();
                                     Temp.descript =
@@ -350,6 +339,42 @@ class _HomeScreenState extends State<HomeScreen>
                                                 type: Temp.type,
                                                 person: Temp.person)));
                                   },
+                          child: Container(
+                              child: ListTile(
+                                title: Text(document['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    document['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                // trailing: IconButton(
+                                //   icon: Icon(Icons.remove_red_eye),
+                                //   color: Colors.black,
+                                //   onPressed: () {
+                                //     //Set assets to pushed to next screen
+                                //     Temp.assets = document['Asset'].toString();
+                                //     Temp.descript =
+                                //         document['Description'].toString();
+                                //     Temp.timedue = document['Due'].toDate();
+                                //     Temp.id = document['ID'].toString();
+                                //     Temp.prio = document['Priority'].toString();
+                                //     Temp.type = document['Type'].toString();
+                                //     Temp.person =
+                                //         document['Personnel'].toString();
+                                //     //Push to next screen for selected WKO
+                                //     Navigator.push(
+                                //         context,
+                                //         MaterialPageRoute(
+                                //             builder: (context) => WKOView(
+                                //                 assets: Temp.assets,
+                                //                 descript: Temp.descript,
+                                //                 timedue: Temp.timedue,
+                                //                 id: Temp.id,
+                                //                 prio: Temp.prio,
+                                //                 type: Temp.type,
+                                //                 person: Temp.person)));
+                                //   },
                                 ),
                               ));
                         } else
