@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:testflutter/HomeScreen.dart';
 import 'package:testflutter/TestingPage.dart';
+import 'package:testflutter/services/location.dart';
+import 'services/location.dart';
+import 'package:geolocator/geolocator.dart';
 
 
 
@@ -37,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
 void click() {
   String user = 'Branden';
+  Position position = get_current_location();
   Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(user: user)));
 }
 
