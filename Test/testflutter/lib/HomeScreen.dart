@@ -431,7 +431,43 @@ class _HomeScreenState extends State<HomeScreen>
             return Column(
               children: [
                 if(snapshot.data.docs[index]['Personnel'].toString() == 'DocumentReference(EMP/0000)')
-                  Text(snapshot.data.docs[index]['Personnel'].toString())
+                  //Text(snapshot.data.docs[index]['Personnel'].toString()),
+                  GestureDetector(
+                            onTap: () {
+                                    //Set assets to pushed to next screen
+                                    Temp.assets = snapshot.data.docs[index]['Asset'].toString();
+                                    Temp.descript =
+                                        snapshot.data.docs[index]['Description'].toString();
+                                    Temp.timedue = snapshot.data.docs[index]['Due'].toDate();
+                                    Temp.id = snapshot.data.docs[index]['ID'].toString();
+                                    Temp.prio = snapshot.data.docs[index]['Priority'].toString();
+                                    Temp.type = snapshot.data.docs[index]['Type'].toString();
+                                    Temp.person =
+                                        snapshot.data.docs[index]['Personnel'].toString();
+                                    //Push to next screen for selected WKO
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => WKOView(
+                                                assets: Temp.assets,
+                                                descript: Temp.descript,
+                                                timedue: Temp.timedue,
+                                                id: Temp.id,
+                                                prio: Temp.prio,
+                                                type: Temp.type,
+                                                person: Temp.person)));
+                                  },
+                          child: Container(
+                              child: ListTile(
+                                title: Text(snapshot.data.docs[index]['ID'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                subtitle: Text(
+                                    snapshot.data.docs[index]['Description'].toString(),
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                ),
+                  ))
               ]
               );
           }
