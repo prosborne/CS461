@@ -108,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen>
         children: [
           Center(child: _dailyWKO()),
           Center(child: _weekWKO()),
-          Center(child: _monthlyWKO()),
+          Center(child: _testWidget()),    //_monthlyWKO()),
         ],
       ),
     );
@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen>
 //Daily Work Order Function
   Widget _dailyWKO() {
     return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
+      stream: databaseReference.collection('WKO').snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
@@ -172,7 +172,8 @@ class _HomeScreenState extends State<HomeScreen>
                                 
                                   
                                 ),
-                              ));
+                              )
+                              );
                         } else
                           return Container(
 
@@ -183,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ));
                       },
                       fallbackBuilder: (BuildContext context) {
-                        return Text('hey');
+                        return Text('Empty');
                       }),
                 ],
               )),
@@ -202,7 +203,6 @@ class _HomeScreenState extends State<HomeScreen>
         if (!snapshot.hasData) return new Text('Loading...');
         return new ListView(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
-          
             return new ListTile(
               //Display appropriate WKO for day, week, month tab view
               title: Card(
@@ -414,5 +414,30 @@ class _HomeScreenState extends State<HomeScreen>
       selectedItemColor: Colors.red,
     );
   }
+
+
+
+
+  Widget _testWidget(){
+    //databaseReference.collection('WKO').snapshots().listen((snapshot){});
+    
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
+      builder: (BuildContext context, AsyncSnapshot snapshot) {
+        if (!snapshot.hasData) return new Text('Loading...');
+        return ListView.builder(
+          itemCount: snapshot.data.docs.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                if(snapshot.data.docs[index]['Personnel'].toString() == 'DocumentReference(EMP/0000)')
+                  Text(snapshot.data.docs[index]['Personnel'].toString())
+              ]
+              );
+          }
+        );
+      }
+    );
+      }
 
 }

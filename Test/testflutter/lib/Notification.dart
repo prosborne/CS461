@@ -182,7 +182,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         } else
                           return Container(
                               child: ListTile(
-                            title: Text('This shouldnt be here :(',
+                            title: Text('Empty',
                                 style: TextStyle(fontWeight: FontWeight.bold)),
                             leading: IconButton(
                               icon: Icon(Icons.remove_red_eye),
@@ -194,7 +194,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ));
                       },
                       fallbackBuilder: (BuildContext context) {
-                        return Text('hey');
+                        return Text('Empty');
                       }),
                 ],
               )),
