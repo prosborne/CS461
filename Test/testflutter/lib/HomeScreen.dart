@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
+import 'package:testflutter/Login.dart';
 
 import 'package:testflutter/Settings.dart';
 import 'package:testflutter/WKOView.dart';
 import 'package:testflutter/Timer.dart';
 import 'package:testflutter/Notification.dart';
+
+final databaseReference = FirebaseFirestore.instance;
 
 class Checker {
   static String check = '';
@@ -174,7 +177,7 @@ class _HomeScreenState extends State<HomeScreen>
                           return Container(
 
                               child: ListTile(
-                                title: Text('This shouldnt be here :(',
+                                title: Text(' ',
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
                                 ));
@@ -267,13 +270,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                               ));
                         } else
-                          return Container(
-
-                              child: ListTile(
-                                title: Text('This shouldnt be here :(',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                ));
+                          return SizedBox.shrink();
                       },
                       fallbackBuilder: (BuildContext context) {
                         return Text('hey');
@@ -348,46 +345,18 @@ class _HomeScreenState extends State<HomeScreen>
                                     document['Description'].toString(),
                                     style:
                                         TextStyle(fontWeight: FontWeight.bold)),
-                                // trailing: IconButton(
-                                //   icon: Icon(Icons.remove_red_eye),
-                                //   color: Colors.black,
-                                //   onPressed: () {
-                                //     //Set assets to pushed to next screen
-                                //     Temp.assets = document['Asset'].toString();
-                                //     Temp.descript =
-                                //         document['Description'].toString();
-                                //     Temp.timedue = document['Due'].toDate();
-                                //     Temp.id = document['ID'].toString();
-                                //     Temp.prio = document['Priority'].toString();
-                                //     Temp.type = document['Type'].toString();
-                                //     Temp.person =
-                                //         document['Personnel'].toString();
-                                //     //Push to next screen for selected WKO
-                                //     Navigator.push(
-                                //         context,
-                                //         MaterialPageRoute(
-                                //             builder: (context) => WKOView(
-                                //                 assets: Temp.assets,
-                                //                 descript: Temp.descript,
-                                //                 timedue: Temp.timedue,
-                                //                 id: Temp.id,
-                                //                 prio: Temp.prio,
-                                //                 type: Temp.type,
-                                //                 person: Temp.person)));
-                                //   },
                                 ),
                               ));
                         } else
-                          return Container(
+                          return SizedBox(
+                            height: 0.1,
+                            
 
-                              child: ListTile(
-                                title: Text('This shouldnt be here :(',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                ));
+                          );
+                          
                       },
                       fallbackBuilder: (BuildContext context) {
-                        return Text('hey');
+                        return Text('filler');
                       }),
                 ],
               )),
@@ -398,6 +367,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+
   //Bottom nav bar
   Widget _bottomNav() {
     return BottomNavigationBar(
@@ -406,6 +376,11 @@ class _HomeScreenState extends State<HomeScreen>
         setState(() {
           this._index = _index;
         });
+        if (_index == 1) {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => LoginScreen()));
+        }
+        
         if (_index == 2) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => MyTimer()));
@@ -413,16 +388,6 @@ class _HomeScreenState extends State<HomeScreen>
         if (_index == 3) {
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => SettingsPage()));
-          // PopupMenuButton(
-          //   itemBuilder: (BuildContext bc) => [
-          //     PopupMenuItem(child: Text("Sign Out"), value: 1),
-          //   ],
-          //   onSelected: (value) {
-          //     if(value == 1){
-          //       Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen()));
-          //     }
-          //   }
-          // );
         }
       },
       type: BottomNavigationBarType.fixed,
