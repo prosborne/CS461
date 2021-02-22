@@ -29,8 +29,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final double controlWidth = 350.0;
 
 
-  //String username = 'Branden';
-  String password = '';
+  String username;
+  String password;
   String errorText = '';
 
   @override
@@ -39,9 +39,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
 void click() {
-  String user = 'Branden';
   Position position = get_current_location();
-  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(user: user)));
+  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen(user: username)));
 }
 
   @override
@@ -51,12 +50,16 @@ void click() {
 //Username for login process
     final usernameField = TextField( 
       obscureText: false,
+      onSubmitted: (String value){
+        username = value;
+      },
       decoration: InputDecoration(
         contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
         hintText: "Username",
         border:
           OutlineInputBorder())
     );
+
 
 //Password for login process   
     final passwordField = TextField(

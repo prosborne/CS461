@@ -5,13 +5,14 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 
 import 'package:testflutter/WKOView.dart';
 
-class Temp {
+class WKO {
   static String assets;
   static String descript;
   static DateTime timedue;
   static String id;
   static String prio;
   static String type;
+ // static String person;
   static String person;
 }
 
@@ -91,32 +92,32 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     GestureDetector(
                         onTap: () {
                           //Set assets to pushed to next screen
-                          Temp.assets =
-                              snapshot.data.docs[index]['Asset'].toString();
-                          Temp.descript = snapshot
+                          String assetWKO = snapshot.data.docs[index]['Asset'].toString();
+                          _assetChecker(assetWKO);
+                          WKO.descript = snapshot
                               .data.docs[index]['Description']
                               .toString();
-                          Temp.timedue =
+                          WKO.timedue =
                               snapshot.data.docs[index]['Due'].toDate();
-                          Temp.id = snapshot.data.docs[index]['ID'].toString();
-                          Temp.prio =
+                          WKO.id = snapshot.data.docs[index]['ID'].toString();
+                          WKO.prio =
                               snapshot.data.docs[index]['Priority'].toString();
-                          Temp.type =
+                          WKO.type =
                               snapshot.data.docs[index]['Type'].toString();
-                          Temp.person =
-                              snapshot.data.docs[index]['Personnel'].toString();
+                          String personWKO = snapshot.data.docs[index]['Personnel'].toString();
+                          _personChecker(personWKO);
                           //Push to next screen for selected WKO
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => WKOView(
-                                      assets: Temp.assets,
-                                      descript: Temp.descript,
-                                      timedue: Temp.timedue,
-                                      id: Temp.id,
-                                      prio: Temp.prio,
-                                      type: Temp.type,
-                                      person: Temp.person)));
+                                      assets: WKO.assets,
+                                      descript: WKO.descript,
+                                      timedue: WKO.timedue,
+                                      id: WKO.id,
+                                      prio: WKO.prio,
+                                      type: WKO.type,
+                                      person: WKO.person)));
                         },
                         child: Container(
                           child: ListTile(
@@ -141,88 +142,73 @@ class _NotificationScreenState extends State<NotificationScreen> {
         });
   }
 
-//   Widget _unassWKO() {
-//     return StreamBuilder<QuerySnapshot>(
-//       stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
-//       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-//         if (!snapshot.hasData) return new Text('Loading...');
-//         return new ListView(
-//           children: snapshot.data.docs.map((DocumentSnapshot document) {
-//             return new ListTile(
-//               //Display appropriate WKO for day, week, month tab view
+void _assetChecker(String x){
+  switch (x){
+    case ('DocumentReference(GEOLOC/wrWnYGNTwRwasNXwmMtS)'):
+    {
+      WKO.assets = 'Kelly Engineering Center';
+      print('kelly Engineering Center');
+    }
+    break;
+    case ('DocumentReference(GEOLOC/rHjy81bXaT3LM5ENIaH0)'):
+    {
+      WKO.assets = 'OSU Foundation Center';
+      print('OSU Foundation Center');
+    }
+    break;
+    case ('DocumentReference(GEOLOC/RwIJdGEHDFcQS8jmuddR)'):
+    {
+      WKO.assets = 'OSU Botany Farm';
+      print('OSU Botany Farm');
+    }
+    break;
+    case ('DocumentReference(GEOLOC/8Pd9jydcDhmTpwkBNrMS)'):
+    {
+      WKO.assets = 'Johnson Hall';
+      print('Johnson Hall');
+    }
+    break;
+    default:
+    {
+      WKO.assets = 'Default Location';
+      print('Broken');
+    }
+    break;
+  }
+}
 
-//               title: Card(
-//                   child: Column(
-//                 children: [
-//                   Conditional.single(
-//                       context: context,
-//                       conditionBuilder: (BuildContext context) => true == true,
-//                       widgetBuilder: (BuildContext context) {
-//                         if (document['Personnel'].toString() ==
-//                             'DocumentReference(EMP/0000)') {
-//                           return Container(
-//                               child: ListTile(
-//                             title: Text(document['ID'].toString(),
-//                                 style: TextStyle(fontWeight: FontWeight.bold)),
-//                             subtitle: Text(document['Description'].toString(),
-//                                 style: TextStyle(fontWeight: FontWeight.bold)),
-//                             leading: IconButton(
-//                               icon: Icon(Icons.remove_red_eye),
-//                               color: Colors.black,
-//                               onPressed: () {
-//                                 //Set assets to pushed to next screen
-//                                 Temp.assets = document['Asset'].toString();
-//                                 Temp.descript =
-//                                     document['Description'].toString();
-//                                 Temp.timedue = document['Due'].toDate();
-//                                 Temp.id = document['ID'].toString();
-//                                 Temp.prio = document['Priority'].toString();
-//                                 Temp.type = document['Type'].toString();
-//                                 Temp.person = document['Personnel'].toString();
-//                                 //Push to next screen for selected WKO
-//                                 Navigator.push(
-//                                     context,
-//                                     MaterialPageRoute(
-//                                         builder: (context) => WKOView(
-//                                             assets: Temp.assets,
-//                                             descript: Temp.descript,
-//                                             timedue: Temp.timedue,
-//                                             id: Temp.id,
-//                                             prio: Temp.prio,
-//                                             type: Temp.type,
-//                                             person: Temp.person)));
-//                               },
-//                             ),
-//                             trailing: IconButton(
-//                               icon: Icon(Icons.add, color: Colors.black),
-//                               tooltip: 'Add WKO',
-//                               onPressed: () {
-//                                 _showMyDialog();
-//                               },
-//                             ),
-//                           ));
-//                         } else
-//                           return Container(
-//                               child: ListTile(
-//                             title: Text('Empty',
-//                                 style: TextStyle(fontWeight: FontWeight.bold)),
-//                             leading: IconButton(
-//                               icon: Icon(Icons.remove_red_eye),
-//                               color: Colors.black,
-//                               onPressed: () {},
-//                             ),
-//                           ));
-//                       },
-//                       fallbackBuilder: (BuildContext context) {
-//                         return Text('Empty');
-//                       }),
-//                 ],
-//               )),
-//             );
-//           }).toList(),
-//         );
-//       },
-//     );
-//   }
-// }
+void _personChecker(String x){
+  switch (x){
+    case ('DocumentReference(EMP/0000)'):
+    {
+      WKO.person = 'Unassigned';
+      print('Unassigned');
+    }
+    break;
+    case ('DocumentReference(EMP/HhB68yRmzFGbRnJf2GHP)'):
+    {
+      WKO.person = 'Hunter Christensen';
+      print('Hunter C');
+    }
+    break;
+    case ('DocumentReference(EMP/YuDRVKSwtaWEz00cXiPA)'):
+    {
+      WKO.person = 'Branden Holloway';
+      print('Branden H');
+    }
+    break;
+    case ('DocumentReference(EMP/Z3hNoEArVupMxARPCe3R)'):
+    {
+      WKO.person = 'Spencer Big';
+      print('Spencer B');
+    }
+    break;
+    default:
+    {
+      WKO.person = 'Default person';
+      print('Broken');
+    }
+    break;
+  }
+}
 }
