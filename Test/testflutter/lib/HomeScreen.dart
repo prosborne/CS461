@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:testflutter/Login.dart';
 
 import 'package:testflutter/Settings.dart';
 import 'package:testflutter/WKOView.dart';
 import 'package:testflutter/Timer.dart';
 import 'package:testflutter/Notification.dart';
+import 'package:geolocator/geolocator.dart';
 
 final databaseReference = FirebaseFirestore.instance;
 
 class Checker {
   static String check = '';
+}
+
+class Location{
+  
 }
 
 class Temp {

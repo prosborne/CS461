@@ -5,6 +5,8 @@ import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart
 
 import 'package:testflutter/WKOView.dart';
 
+import 'main.dart';
+
 class Temp {
   static String assets;
   static String descript;
@@ -86,7 +88,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
               itemBuilder: (context, index) {
                 return Column(children: [
                   if (snapshot.data.docs[index]['Personnel'].toString() ==
-                      'DocumentReference(EMP/0000)')
+                      'DocumentReference(EMP/0000)' &&
+                      snapshot.data.docs[index]['Asset'].toString() == 'DocumentReference(GEOLOC/${closestBuilding.buildingId.toString()})')
                     //Text(snapshot.data.docs[index]['Personnel'].toString()),
                     GestureDetector(
                         onTap: () {
