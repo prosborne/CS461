@@ -160,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen>
       selectedItemColor: Colors.red,
     );
   }
+
   //Display daily work orders
   Widget _dailyWKO() {
     return StreamBuilder(
@@ -243,6 +244,7 @@ class _HomeScreenState extends State<HomeScreen>
               });
         });
   }
+
   //Display weekly work orders
   Widget _weeklyWKO() {
     return StreamBuilder(
@@ -342,6 +344,7 @@ class _HomeScreenState extends State<HomeScreen>
               });
         });
   }
+
   //Display monthly work orders
   Widget _monthlyWKO() {
     return StreamBuilder(

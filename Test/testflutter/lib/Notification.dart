@@ -72,8 +72,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     );
   }
 
-  
-
   Widget _unassignedWKO() {
     //databaseReference.collection('WKO').snapshots().listen((snapshot){});
 
@@ -87,20 +85,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 return Column(children: [
                   if (snapshot.data.docs[index]['Personnel'].toString() ==
                       'DocumentReference(EMP/0000)')
-                    //Text(snapshot.data.docs[index]['Personnel'].toString()),
+                    // Text((snapshot.data.docs[index]['Personnel'])),
                     GestureDetector(
                         onTap: () {
                           //Set assets to pushed to next screen
-                          Temp.assets =
-                              snapshot.data.docs[index]['Asset'].toString();
+                          Temp.assets = snapshot
+                              .data.docs[index]['Assets'].snapshot
+                              .toString();
                           Temp.descript = snapshot
                               .data.docs[index]['Description']
                               .toString();
                           Temp.timedue =
                               snapshot.data.docs[index]['Due'].toDate();
                           Temp.id = snapshot.data.docs[index]['ID'].toString();
-                          Temp.prio =
-                              snapshot.data.docs[index]['Priority'].toString();
+                          Temp.prio = snapshot.data.docs[index]['Priority'];
                           Temp.type =
                               snapshot.data.docs[index]['Type'].toString();
                           Temp.person =
