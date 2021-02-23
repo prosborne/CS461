@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:testflutter/HomeScreen.dart';
+import 'package:testflutter/Login.dart';
 import 'package:testflutter/Notification.dart';
 
 class MyTimer extends StatefulWidget {
   @override
-  _MyTimerState createState() => _MyTimerState();
+  final String user;
+  MyTimer({Key key, @required this.user}) : super(key: key);
+  _MyTimerState createState() => _MyTimerState(user);
 }
 
 class _MyTimerState extends State<MyTimer> {
+  String username;
+  _MyTimerState(this.username);
   final _isHours = true;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
@@ -248,6 +254,12 @@ class _MyTimerState extends State<MyTimer> {
                                           onPressed: () {
                                             OverlaySupportEntry.of(context)
                                                 .dismiss();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        HomeScreen(
+                                                            user: username)));
                                           }),
                                     ),
                                   ),

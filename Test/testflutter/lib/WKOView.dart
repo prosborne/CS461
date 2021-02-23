@@ -24,6 +24,7 @@ class WKOView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text('$assets', style: TextStyle(color: Colors.black)),
         backgroundColor: Color(0xFFE0E0E0),
         leading: GestureDetector(
@@ -70,7 +71,7 @@ class WKOView extends StatelessWidget {
               ListTile(
                 title: Text('Personnel:',
                     style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text('   $person'),
+                subtitle: Text(' $person'),
               ),
             ],
           ))
