@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
+
+
 class WKOView extends StatelessWidget {
+  
   final String assets;
   final String descript;
   final DateTime timedue;
@@ -26,7 +30,7 @@ class WKOView extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         title: Text('$assets', style: TextStyle(color: Colors.black)),
-        backgroundColor: Color(0xFFE0E0E0),
+        backgroundColor: Colors.grey.shade100,
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -39,10 +43,9 @@ class WKOView extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Card(
-              child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
+          Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
               ListTile(
                 title:
                     Text('ID#:', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -74,9 +77,10 @@ class WKOView extends StatelessWidget {
                 subtitle: Text(' $person'),
               ),
             ],
-          ))
+          )
         ],
       ),
+      
     );
   }
 }

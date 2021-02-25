@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen>
           cursorColor: Colors.white,
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Color(0xFFE0E0E0),
+        backgroundColor: Colors.grey.shade100,
         bottom: TabBar(
           controller: _controller,
           labelColor: Colors.black,
@@ -133,8 +133,8 @@ class _HomeScreenState extends State<HomeScreen>
         }
 
         if (_index == 2) {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyTimer()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => MyTimer(user: username)));
         }
         if (_index == 3) {
           Navigator.push(
@@ -142,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen>
         }
       },
       type: BottomNavigationBarType.fixed,
-      backgroundColor: Color(0xFFE0E0E0),
+      backgroundColor: Colors.grey.shade200,
       items: const <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Icon(Icons.grading),
@@ -168,196 +168,220 @@ class _HomeScreenState extends State<HomeScreen>
 
   //Display daily work orders
   Widget _dailyWKO() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) return new Text('Loading...');
-          return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Conditional.single(
-                        context: context,
-                        conditionBuilder: (BuildContext context) =>
-                            true == true,
-                        widgetBuilder: (BuildContext context) {
-                          DayObject._timestamp =
-                              snapshot.data.docs[index]['Due'].toDate();
-                          if ((DayObject._timestamp.month ==
-                                  DayObject._today.month) &&
-                              (DayObject._timestamp.day ==
-                                  DayObject._today.day)) {
-                            return GestureDetector(
-                                onTap: () {
-                                  //Set assets to pushed to next screen
-                                  String assetWKO = snapshot
-                                      .data.docs[index]['Asset']
-                                      .toString();
-                                  _assetChecker(assetWKO);
-                                  WKO.descript = snapshot
-                                      .data.docs[index]['Description']
-                                      .toString();
-                                  WKO.timedue =
-                                      snapshot.data.docs[index]['Due'].toDate();
-                                  WKO.id = snapshot.data.docs[index]['ID']
-                                      .toString();
-                                  WKO.prio = snapshot
-                                      .data.docs[index]['Priority']
-                                      .toString();
-                                  WKO.type = snapshot.data.docs[index]['Type']
-                                      .toString();
-                                  String personWKO = snapshot
-                                      .data.docs[index]['Personnel']
-                                      .toString();
-                                  _personChecker(personWKO);
+    return Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey.shade200,
+          ),
+        ),
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) return new Text('Loading...');
+              return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Conditional.single(
+                            context: context,
+                            conditionBuilder: (BuildContext context) =>
+                                true == true,
+                            widgetBuilder: (BuildContext context) {
+                              DayObject._timestamp =
+                                  snapshot.data.docs[index]['Due'].toDate();
+                              if ((DayObject._timestamp.month ==
+                                      DayObject._today.month) &&
+                                  (DayObject._timestamp.day ==
+                                      DayObject._today.day)) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      //Set assets to pushed to next screen
+                                      String assetWKO = snapshot
+                                          .data.docs[index]['Asset']
+                                          .toString();
+                                      _assetChecker(assetWKO);
+                                      WKO.descript = snapshot
+                                          .data.docs[index]['Description']
+                                          .toString();
+                                      WKO.timedue = snapshot
+                                          .data.docs[index]['Due']
+                                          .toDate();
+                                      WKO.id = snapshot.data.docs[index]['ID']
+                                          .toString();
+                                      WKO.prio = snapshot
+                                          .data.docs[index]['Priority']
+                                          .toString();
+                                      WKO.type = snapshot
+                                          .data.docs[index]['Type']
+                                          .toString();
+                                      String personWKO = snapshot
+                                          .data.docs[index]['Personnel']
+                                          .toString();
+                                      _personChecker(personWKO);
 
-                                  //Push to next screen for selected WKO
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WKOView(
-                                              assets: WKO.assets,
-                                              descript: WKO.descript,
-                                              timedue: WKO.timedue,
-                                              id: WKO.id,
-                                              prio: WKO.prio,
-                                              type: WKO.type,
-                                              person: WKO.person)));
-                                },
-                                child: Container(
-                                  child: ListTile(
-                                    title: Text(
-                                        snapshot.data.docs[index]['ID']
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    subtitle: Text(
-                                        snapshot.data.docs[index]['Description']
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                ));
-                          } else
-                            return SizedBox(
-                              height: 0.1,
-                            );
-                        },
-                        fallbackBuilder: (BuildContext context) {
-                          return Text('filler');
-                        }),
-                  ],
-                );
-              });
-        });
+                                      //Push to next screen for selected WKO
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => WKOView(
+                                                  assets: WKO.assets,
+                                                  descript: WKO.descript,
+                                                  timedue: WKO.timedue,
+                                                  id: WKO.id,
+                                                  prio: WKO.prio,
+                                                  type: WKO.type,
+                                                  person: WKO.person)));
+                                    },
+                                    child: Container(
+                                      child: ListTile(
+                                        title: Text(
+                                            snapshot.data.docs[index]['ID']
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                        subtitle: Text(
+                                            snapshot
+                                                .data.docs[index]['Description']
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ));
+                              } else
+                                return SizedBox(
+                                  height: 0.1,
+                                );
+                            },
+                            fallbackBuilder: (BuildContext context) {
+                              return Text('filler');
+                            }),
+                      ],
+                    );
+                  });
+            }));
   }
 
   //Display weekly work orders
   Widget _weeklyWKO() {
-    return StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (!snapshot.hasData) return new Text('Loading...');
-          return ListView.builder(
-              itemCount: snapshot.data.docs.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    Conditional.single(
-                        context: context,
-                        conditionBuilder: (BuildContext context) =>
-                            true == true,
-                        widgetBuilder: (BuildContext context) {
-                          DayObject._timestamp =
-                              snapshot.data.docs[index]['Due'].toDate();
-                          var check = false;
-                          var monthdiff = (DayObject._timestamp.month -
-                              DayObject._today.month);
-                          if (monthdiff == 0 &&
-                              ((DayObject._timestamp.day -
-                                      DayObject._today.day) <
-                                  7)) {
-                            check = true;
-                          } else if (monthdiff <= 1) {
-                            var WKO = DayObject._timestamp.day + 30;
-                            var WKO2 = (WKO - DayObject._today.day);
-                            if (WKO2 < 7)
-                              check = true;
-                            else {
-                              check = false;
-                            }
-                          } else {
-                            check = true;
-                          }
-                          if (check == true) {
-                            return GestureDetector(
-                                onTap: () {
-                                  String assetWKO = snapshot
-                                      .data.docs[index]['Asset']
-                                      .toString();
-                                  _assetChecker(assetWKO);
-                                  WKO.descript = snapshot
-                                      .data.docs[index]['Description']
-                                      .toString();
-                                  WKO.timedue =
-                                      snapshot.data.docs[index]['Due'].toDate();
-                                  WKO.id = snapshot.data.docs[index]['ID']
-                                      .toString();
-                                  WKO.prio = snapshot
-                                      .data.docs[index]['Priority']
-                                      .toString();
-                                  WKO.type = snapshot.data.docs[index]['Type']
-                                      .toString();
-                                  String personWKO = snapshot
-                                      .data.docs[index]['Personnel']
-                                      .toString();
-                                  _personChecker(personWKO);
+    return Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey.shade200,
+          ),
+        ),
+        child: StreamBuilder(
+            stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (!snapshot.hasData) return new Text('Loading...');
+              return ListView.builder(
+                  itemCount: snapshot.data.docs.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      children: [
+                        Conditional.single(
+                            context: context,
+                            conditionBuilder: (BuildContext context) =>
+                                true == true,
+                            widgetBuilder: (BuildContext context) {
+                              DayObject._timestamp =
+                                  snapshot.data.docs[index]['Due'].toDate();
+                              var check = false;
+                              var monthdiff = (DayObject._timestamp.month -
+                                  DayObject._today.month);
+                              if (monthdiff == 0 &&
+                                  ((DayObject._timestamp.day -
+                                          DayObject._today.day) <
+                                      7)) {
+                                check = true;
+                              } else if (monthdiff <= 1) {
+                                var WKO = DayObject._timestamp.day + 30;
+                                var WKO2 = (WKO - DayObject._today.day);
+                                if (WKO2 < 7)
+                                  check = true;
+                                else {
+                                  check = false;
+                                }
+                              } else {
+                                check = true;
+                              }
+                              if (check == true) {
+                                return GestureDetector(
+                                    onTap: () {
+                                      String assetWKO = snapshot
+                                          .data.docs[index]['Asset']
+                                          .toString();
+                                      _assetChecker(assetWKO);
+                                      WKO.descript = snapshot
+                                          .data.docs[index]['Description']
+                                          .toString();
+                                      WKO.timedue = snapshot
+                                          .data.docs[index]['Due']
+                                          .toDate();
+                                      WKO.id = snapshot.data.docs[index]['ID']
+                                          .toString();
+                                      WKO.prio = snapshot
+                                          .data.docs[index]['Priority']
+                                          .toString();
+                                      WKO.type = snapshot
+                                          .data.docs[index]['Type']
+                                          .toString();
+                                      String personWKO = snapshot
+                                          .data.docs[index]['Personnel']
+                                          .toString();
+                                      _personChecker(personWKO);
 
-                                  //Push to next screen for selected WKO
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => WKOView(
-                                              assets: WKO.assets,
-                                              descript: WKO.descript,
-                                              timedue: WKO.timedue,
-                                              id: WKO.id,
-                                              prio: WKO.prio,
-                                              type: WKO.type,
-                                              person: WKO.person)));
-                                },
-                                child: Container(
-                                  child: ListTile(
-                                    title: Text(
-                                        snapshot.data.docs[index]['ID']
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    subtitle: Text(
-                                        snapshot.data.docs[index]['Description']
-                                            .toString(),
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                  ),
-                                ));
-                          } else
-                            return SizedBox(
-                              height: 0.1,
-                            );
-                        },
-                        fallbackBuilder: (BuildContext context) {
-                          return Text('filler');
-                        }),
-                  ],
-                );
-              });
-        });
+                                      //Push to next screen for selected WKO
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => WKOView(
+                                                  assets: WKO.assets,
+                                                  descript: WKO.descript,
+                                                  timedue: WKO.timedue,
+                                                  id: WKO.id,
+                                                  prio: WKO.prio,
+                                                  type: WKO.type,
+                                                  person: WKO.person)));
+                                    },
+                                    child: Container(
+                                      child: ListTile(
+                                        title: Text(
+                                            snapshot.data.docs[index]['ID']
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                        subtitle: Text(
+                                            snapshot
+                                                .data.docs[index]['Description']
+                                                .toString(),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ));
+                              } else
+                                return SizedBox(
+                                  height: 0.1,
+                                );
+                            },
+                            fallbackBuilder: (BuildContext context) {
+                              return Text('filler');
+                            }),
+                      ],
+                    );
+                  });
+            }));
   }
 
   //Display monthly work orders
   Widget _monthlyWKO() {
-    return StreamBuilder(
+    return Container(
+        decoration: BoxDecoration(
+          border: Border.all(
+            color: Colors.grey.shade200,
+          ),
+        ),
+        child:StreamBuilder(
         stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (!snapshot.hasData) return new Text('Loading...');
@@ -444,7 +468,7 @@ class _HomeScreenState extends State<HomeScreen>
                   ],
                 );
               });
-        });
+        }));
   }
 
   void _assetChecker(String x) {

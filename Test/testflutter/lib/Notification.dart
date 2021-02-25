@@ -14,7 +14,6 @@ class WKO {
   static String id;
   static String prio;
   static String type;
-  // static String person;
   static String person;
 }
 
@@ -37,7 +36,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
               'Available WKOs',
               style: TextStyle(color: Colors.black),
             ),
-            backgroundColor: Color(0xFFE0E0E0),
+            backgroundColor: Colors.grey.shade200,
             leading: Padding(
                 padding: EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
