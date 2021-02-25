@@ -27,8 +27,10 @@ Future <void> getClosestBuilding()async{
   int index = 0;
   print('Getting Closest Building...');
   print(geolocs.length);
+  print('${currentPosition.latitude}, ${currentPosition.longitude}');
   if(currentPosition != null && geolocs.length != 0){
     for(int i = 0; i < geolocs.length; i++){
+
       if(geolocs[i].isInside(Point([currentPosition.latitude, currentPosition.longitude])) == true){
         closestBuilding = geolocs[i];
         print('Inside');
@@ -91,7 +93,7 @@ class Geoloc {
       if(points.length > 0){
         for(int i = 0; i < points.length; i++){
           lines.add(Line(p1: points[i % points.length], p2: points[(i + 1) % points.length]));
-          //lines[i].printLine();
+          lines[i].printLine();
         }
       }
       //this.latitude = data["Latitude"];
@@ -100,8 +102,8 @@ class Geoloc {
 
     bool isInside(Point p1){
       int tmp1 = 0, tmp2 = 0;
-      double x = p1.latitude;
-      double y = p1.longitude;
+      double x = p1.longitude;
+      double y = p1.latitude;
 
       for(int i = 0; i < this.lines.length; i++){
         double a = this.lines[i].a;
@@ -115,7 +117,7 @@ class Geoloc {
         int direction = this.lines[i].direction;
 
         //print('${a * x + b * y + c}');
-
+        print('x: $x, xMax: $xMax');
         if(x < xMax){
           if(direction == 1 || direction == 3 || direction == 5){
             if(y <= yMax && y > yMin){
@@ -215,7 +217,7 @@ class Geoloc {
 
       if(y <= line.maxLatitude && y >= line.minLatitude){
         if(x <= line.maxLongitude && x >= line.minLongitude){
-          return Point([longitude, latitude]);
+          return Point([latitude, longitude]);
         }
       }
       print('_lineDistance $r');
