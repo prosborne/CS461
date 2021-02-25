@@ -31,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void click() {
-    Position position = get_current_location();
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => HomeScreen(user: username)));
   }
