@@ -44,13 +44,15 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: LoginScreen(),
+      home: CircularProgressIndicator()
+      //home: LoginScreen(),
     );
   }
 
   Future<void> _startup()async{ 
     await loadBuildings();
     print(geolocs.length);
+    print(geolocs[0].description);
     await getCurrentLocation();
     print(currentPosition.latitude.toString());
     await getClosestBuilding();
