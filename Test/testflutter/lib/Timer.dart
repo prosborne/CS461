@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:overlay_support/overlay_support.dart';
+import 'package:testflutter/HomeScreen.dart';
+import 'package:testflutter/Login.dart';
+import 'package:testflutter/Notification.dart';
 
 class MyTimer extends StatefulWidget {
   @override
-  _MyTimerState createState() => _MyTimerState();
+  final String user;
+  MyTimer({Key key, @required this.user}) : super(key: key);
+  _MyTimerState createState() => _MyTimerState(user);
 }
 
 class _MyTimerState extends State<MyTimer> {
+  String username;
+  _MyTimerState(this.username);
   final _isHours = true;
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
@@ -219,31 +226,46 @@ class _MyTimerState extends State<MyTimer> {
                             color: Colors.green,
                             shape: const StadiumBorder(),
                             onPressed: () async {
-                            //   showOverlayNotification((context) {
-                            //     return Card(
-                            //       margin:
-                            //           const EdgeInsets.symmetric(horizontal: 4),
-                            //       child: SafeArea(
-                            //         child: ListTile(
-                            //           leading: SizedBox.fromSize(
-                            //               size: const Size(40, 40),
-                            //               child: ClipOval(
-                            //                   child: Image.asset(
-                            //                       "images/logo.jpg"))),
-                            //           title: Text('Work Order Submitted'),
-                            //           subtitle: Text(
-                            //               'Unassigned Work Orders Available.'),
-                            //           trailing: IconButton(
-                            //               icon: Icon(Icons.close),
-                            //               onPressed: () {
-                            //                 OverlaySupportEntry.of(context)
-                            //                     .dismiss();
-                            //               }),
-                            //         ),
-                            //       ),
-                            //     );
-                            //   }, duration: Duration(milliseconds: 4000));
-                             },
+                              showOverlayNotification((context) {
+                                return Card(
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  child: SafeArea(
+                                    child: ListTile(
+                                      leading: SizedBox.fromSize(
+                                          size: const Size(40, 40),
+                                          child: ClipOval(
+                                              child: Image.asset(
+                                                  "images/logo.jpg"))),
+                                      onTap: () {
+                                        OverlaySupportEntry.of(context)
+                                            .dismiss();
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    NotificationScreen()));
+                                      },
+                                      title: Text('Work Order Submitted'),
+                                      subtitle: Text(
+                                          'Unassigned Work Orders Available.'),
+                                      trailing: IconButton(
+                                          icon: Icon(Icons.close_outlined),
+                                          onPressed: () {
+                                            OverlaySupportEntry.of(context)
+                                                .dismiss();
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        HomeScreen(
+                                                            user: username)));
+                                          }),
+                                    ),
+                                  ),
+                                );
+                              }, duration: Duration(milliseconds: 4000));
+                            },
                             child: const Text(
                               'Submit',
                               style: TextStyle(color: Colors.white),

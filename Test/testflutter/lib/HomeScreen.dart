@@ -11,16 +11,16 @@ import 'package:testflutter/Notification.dart';
 import 'package:geolocator/geolocator.dart';
 
 final databaseReference = FirebaseFirestore.instance;
+final String kly = 'DocumentReference(GEOLOC/wrWnYGNTwRwasNXwmMtS)';
+final String bnd = 'DocumentReference(EMP/YuDRVKSwtaWEz00cXiPA)';
+final categoryDocRef =
+    databaseReference.collection('GEOLOC').doc('wrWnYGNTwRwasNXwmMtS');
 
 class Checker {
   static String check = '';
 }
 
-class Location{
-  
-}
-
-class Temp {
+class WKO {
   static String assets;
   static String descript;
   static DateTime timedue;
@@ -32,8 +32,6 @@ class Temp {
 
 class DayObject {
   static DateTime _today = DateTime.now();
-  static DateTime _weekahead =
-      DateTime(_today.year, _today.month, (_today.day + 7));
   static DateTime _timestamp;
 }
 
@@ -42,7 +40,7 @@ class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, @required this.user}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState(user);
 }
 
 /// This is the private State class that goes with HomeScreen.
@@ -50,6 +48,8 @@ class _HomeScreenState extends State<HomeScreen>
     with SingleTickerProviderStateMixin {
   TabController _controller;
   int _index;
+  String username;
+  _HomeScreenState(this.username);
 
   @override
   void initState() {
@@ -72,7 +72,6 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   Widget _tabItems() {
-    String user = 'Branden Holloway';
     return Scaffold(
       appBar: AppBar(
         leading: Icon(
@@ -166,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen>
       selectedItemColor: Colors.red,
     );
   }
+
   //Display daily work orders
   Widget _dailyWKO() {
     return StreamBuilder(
@@ -191,36 +191,39 @@ class _HomeScreenState extends State<HomeScreen>
                             return GestureDetector(
                                 onTap: () {
                                   //Set assets to pushed to next screen
-                                  Temp.assets = snapshot
+                                  String assetWKO = snapshot
                                       .data.docs[index]['Asset']
                                       .toString();
-                                  Temp.descript = snapshot
+                                  _assetChecker(assetWKO);
+                                  WKO.descript = snapshot
                                       .data.docs[index]['Description']
                                       .toString();
-                                  Temp.timedue =
+                                  WKO.timedue =
                                       snapshot.data.docs[index]['Due'].toDate();
-                                  Temp.id = snapshot.data.docs[index]['ID']
+                                  WKO.id = snapshot.data.docs[index]['ID']
                                       .toString();
-                                  Temp.prio = snapshot
+                                  WKO.prio = snapshot
                                       .data.docs[index]['Priority']
                                       .toString();
-                                  Temp.type = snapshot.data.docs[index]['Type']
+                                  WKO.type = snapshot.data.docs[index]['Type']
                                       .toString();
-                                  Temp.person = snapshot
+                                  String personWKO = snapshot
                                       .data.docs[index]['Personnel']
                                       .toString();
+                                  _personChecker(personWKO);
+
                                   //Push to next screen for selected WKO
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => WKOView(
-                                              assets: Temp.assets,
-                                              descript: Temp.descript,
-                                              timedue: Temp.timedue,
-                                              id: Temp.id,
-                                              prio: Temp.prio,
-                                              type: Temp.type,
-                                              person: Temp.person)));
+                                              assets: WKO.assets,
+                                              descript: WKO.descript,
+                                              timedue: WKO.timedue,
+                                              id: WKO.id,
+                                              prio: WKO.prio,
+                                              type: WKO.type,
+                                              person: WKO.person)));
                                 },
                                 child: Container(
                                   child: ListTile(
@@ -249,6 +252,7 @@ class _HomeScreenState extends State<HomeScreen>
               });
         });
   }
+
   //Display weekly work orders
   Widget _weeklyWKO() {
     return StreamBuilder(
@@ -276,9 +280,9 @@ class _HomeScreenState extends State<HomeScreen>
                                   7)) {
                             check = true;
                           } else if (monthdiff <= 1) {
-                            var temp = DayObject._timestamp.day + 30;
-                            var temp2 = (temp - DayObject._today.day);
-                            if (temp2 < 7)
+                            var WKO = DayObject._timestamp.day + 30;
+                            var WKO2 = (WKO - DayObject._today.day);
+                            if (WKO2 < 7)
                               check = true;
                             else {
                               check = false;
@@ -289,37 +293,39 @@ class _HomeScreenState extends State<HomeScreen>
                           if (check == true) {
                             return GestureDetector(
                                 onTap: () {
-                                  //Set assets to pushed to next screen
-                                  Temp.assets = snapshot
+                                  String assetWKO = snapshot
                                       .data.docs[index]['Asset']
                                       .toString();
-                                  Temp.descript = snapshot
+                                  _assetChecker(assetWKO);
+                                  WKO.descript = snapshot
                                       .data.docs[index]['Description']
                                       .toString();
-                                  Temp.timedue =
+                                  WKO.timedue =
                                       snapshot.data.docs[index]['Due'].toDate();
-                                  Temp.id = snapshot.data.docs[index]['ID']
+                                  WKO.id = snapshot.data.docs[index]['ID']
                                       .toString();
-                                  Temp.prio = snapshot
+                                  WKO.prio = snapshot
                                       .data.docs[index]['Priority']
                                       .toString();
-                                  Temp.type = snapshot.data.docs[index]['Type']
+                                  WKO.type = snapshot.data.docs[index]['Type']
                                       .toString();
-                                  Temp.person = snapshot
+                                  String personWKO = snapshot
                                       .data.docs[index]['Personnel']
                                       .toString();
+                                  _personChecker(personWKO);
+
                                   //Push to next screen for selected WKO
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => WKOView(
-                                              assets: Temp.assets,
-                                              descript: Temp.descript,
-                                              timedue: Temp.timedue,
-                                              id: Temp.id,
-                                              prio: Temp.prio,
-                                              type: Temp.type,
-                                              person: Temp.person)));
+                                              assets: WKO.assets,
+                                              descript: WKO.descript,
+                                              timedue: WKO.timedue,
+                                              id: WKO.id,
+                                              prio: WKO.prio,
+                                              type: WKO.type,
+                                              person: WKO.person)));
                                 },
                                 child: Container(
                                   child: ListTile(
@@ -348,6 +354,7 @@ class _HomeScreenState extends State<HomeScreen>
               });
         });
   }
+
   //Display monthly work orders
   Widget _monthlyWKO() {
     return StreamBuilder(
@@ -378,36 +385,39 @@ class _HomeScreenState extends State<HomeScreen>
                             return GestureDetector(
                                 onTap: () {
                                   //Set assets to pushed to next screen
-                                  Temp.assets = snapshot
+                                  String assetWKO = snapshot
                                       .data.docs[index]['Asset']
                                       .toString();
-                                  Temp.descript = snapshot
+                                  _assetChecker(assetWKO);
+                                  WKO.descript = snapshot
                                       .data.docs[index]['Description']
                                       .toString();
-                                  Temp.timedue =
+                                  WKO.timedue =
                                       snapshot.data.docs[index]['Due'].toDate();
-                                  Temp.id = snapshot.data.docs[index]['ID']
+                                  WKO.id = snapshot.data.docs[index]['ID']
                                       .toString();
-                                  Temp.prio = snapshot
+                                  WKO.prio = snapshot
                                       .data.docs[index]['Priority']
                                       .toString();
-                                  Temp.type = snapshot.data.docs[index]['Type']
+                                  WKO.type = snapshot.data.docs[index]['Type']
                                       .toString();
-                                  Temp.person = snapshot
+                                  String personWKO = snapshot
                                       .data.docs[index]['Personnel']
                                       .toString();
+                                  _personChecker(personWKO);
+
                                   //Push to next screen for selected WKO
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) => WKOView(
-                                              assets: Temp.assets,
-                                              descript: Temp.descript,
-                                              timedue: Temp.timedue,
-                                              id: Temp.id,
-                                              prio: Temp.prio,
-                                              type: Temp.type,
-                                              person: Temp.person)));
+                                              assets: WKO.assets,
+                                              descript: WKO.descript,
+                                              timedue: WKO.timedue,
+                                              id: WKO.id,
+                                              prio: WKO.prio,
+                                              type: WKO.type,
+                                              person: WKO.person)));
                                 },
                                 child: Container(
                                   child: ListTile(
@@ -435,5 +445,75 @@ class _HomeScreenState extends State<HomeScreen>
                 );
               });
         });
+  }
+
+  void _assetChecker(String x) {
+    switch (x) {
+      case ('DocumentReference(GEOLOC/wrWnYGNTwRwasNXwmMtS)'):
+        {
+          WKO.assets = 'Kelly Engineering Center';
+          print('kelly Engineering Center');
+        }
+        break;
+      case ('DocumentReference(GEOLOC/rHjy81bXaT3LM5ENIaH0)'):
+        {
+          WKO.assets = 'OSU Foundation Center';
+          print('OSU Foundation Center');
+        }
+        break;
+      case ('DocumentReference(GEOLOC/RwIJdGEHDFcQS8jmuddR)'):
+        {
+          WKO.assets = 'OSU Botany Farm';
+          print('OSU Botany Farm');
+        }
+        break;
+      case ('DocumentReference(GEOLOC/8Pd9jydcDhmTpwkBNrMS)'):
+        {
+          WKO.assets = 'Johnson Hall';
+          print('Johnson Hall');
+        }
+        break;
+      default:
+        {
+          WKO.assets = 'Default Location';
+          print('Broken');
+        }
+        break;
+    }
+  }
+
+  void _personChecker(String x) {
+    switch (x) {
+      case ('DocumentReference(EMP/0000)'):
+        {
+          WKO.person = 'Unassigned';
+          print('Unassigned');
+        }
+        break;
+      case ('DocumentReference(EMP/HhB68yRmzFGbRnJf2GHP)'):
+        {
+          WKO.person = 'Hunter Christensen';
+          print('Hunter C');
+        }
+        break;
+      case ('DocumentReference(EMP/YuDRVKSwtaWEz00cXiPA)'):
+        {
+          WKO.person = 'Branden Holloway';
+          print('Branden H');
+        }
+        break;
+      case ('DocumentReference(EMP/Z3hNoEArVupMxARPCe3R)'):
+        {
+          WKO.person = 'Spencer Big';
+          print('Spencer B');
+        }
+        break;
+      default:
+        {
+          WKO.person = 'Default person';
+          print('Broken');
+        }
+        break;
+    }
   }
 }
