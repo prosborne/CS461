@@ -46,14 +46,14 @@ class _MyHomePage extends State<MyHomePage> {
               style: Theme.of(context).textTheme.headline6),
           Padding(padding: EdgeInsets.all(5)),
           //Display Latitude infomation
-          Row(
-            children:[ Align(
+          Row(children: [
+            Align(
                 alignment: Alignment.topLeft,
                 // Used as a condtional statement
                 child: (document['Latitude'] == null)
                     ? Text('Missing Information')
                     : Text('Lat: ' + document['Latitude'].toString())),
-            ]),
+          ]),
           //Display Longitude information
           Container(
             child: Align(

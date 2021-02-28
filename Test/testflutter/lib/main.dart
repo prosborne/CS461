@@ -28,9 +28,9 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState(){
+  void initState() {
     _startup();
-    if(currentPosition != null && geolocs.length > 0){
+    if (currentPosition != null && geolocs.length > 0) {
       getClosestBuilding();
       print(closestBuilding);
     }
@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<void> _startup()async{ 
+  Future<void> _startup() async {
     await loadBuildings();
     print(geolocs.length);
     await getCurrentLocation();

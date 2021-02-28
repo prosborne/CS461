@@ -254,12 +254,6 @@ class _MyTimerState extends State<MyTimer> {
                                           onPressed: () {
                                             OverlaySupportEntry.of(context)
                                                 .dismiss();
-                                            Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        HomeScreen(
-                                                            user: username)));
                                           }),
                                     ),
                                   ),

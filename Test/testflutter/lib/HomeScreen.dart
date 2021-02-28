@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:testflutter/Login.dart';
 
@@ -37,6 +38,7 @@ class DayObject {
 
 class HomeScreen extends StatefulWidget {
   final String user;
+
   HomeScreen({Key key, @required this.user}) : super(key: key);
 
   @override
@@ -51,11 +53,62 @@ class _HomeScreenState extends State<HomeScreen>
   String username;
   _HomeScreenState(this.username);
 
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+
+  //save token to db
+  _saveDeviceToken() async {
+    //get the currently logged in user
+    String uid = this.username;
+
+    //get the token
+    String tokenData = await _fcm
+        .getToken()
+        .whenComplete(() => print('Tokenization complete'));
+
+    if (tokenData != null) {
+      var tokens =
+          _db.collection('users').doc(uid).collection('tokens').doc(tokenData);
+
+      await tokens
+          .set({'token': tokenData, 'createdAt': FieldValue.serverTimestamp()});
+    }
+  }
+
   @override
   void initState() {
     super.initState();
     _controller = new TabController(length: 3, vsync: this);
     _index = 0;
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.blue,
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+      },
+    );
   }
 
   void clickNotification() {
@@ -493,18 +546,21 @@ class _HomeScreenState extends State<HomeScreen>
       case ('DocumentReference(EMP/HhB68yRmzFGbRnJf2GHP)'):
         {
           WKO.person = 'Hunter Christensen';
+          _fcm.subscribeToTopic('1');
           print('Hunter C');
         }
         break;
       case ('DocumentReference(EMP/YuDRVKSwtaWEz00cXiPA)'):
         {
           WKO.person = 'Branden Holloway';
+          _fcm.subscribeToTopic('1');
           print('Branden H');
         }
         break;
       case ('DocumentReference(EMP/Z3hNoEArVupMxARPCe3R)'):
         {
           WKO.person = 'Spencer Big';
+          _fcm.subscribeToTopic('2');
           print('Spencer B');
         }
         break;
