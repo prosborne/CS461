@@ -193,7 +193,7 @@ class _HomeScreenState extends State<HomeScreen>
                               if ((DayObject._timestamp.month ==
                                       DayObject._today.month) &&
                                   (DayObject._timestamp.day ==
-                                      DayObject._today.day)) {
+                                      DayObject._today.day && snapshot.data.docs[index]['Personnel'].toString() != 'DocumentReference(EMP/0000)')) {
                                 return GestureDetector(
                                     onTap: () {
                                       //Set assets to pushed to next screen
@@ -263,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   //Display weekly work orders
-  Widget _weeklyWKO() {
+Widget _weeklyWKO() {
     return Container(
         decoration: BoxDecoration(
           border: Border.all(
@@ -400,7 +400,7 @@ class _HomeScreenState extends State<HomeScreen>
                           var check = false;
                           var monthdiff = (DayObject._timestamp.month -
                               DayObject._today.month);
-                          if (monthdiff < 1)
+                          if (monthdiff < 1 && snapshot.data.docs[index]['Personnel'].toString() != 'DocumentReference(EMP/0000)')
                             check = true;
                           else {
                             check = false;
@@ -475,32 +475,27 @@ class _HomeScreenState extends State<HomeScreen>
     switch (x) {
       case ('DocumentReference(GEOLOC/wrWnYGNTwRwasNXwmMtS)'):
         {
-          WKO.assets = 'Kelly Engineering Center';
-          print('kelly Engineering Center');
+          WKO.assets = 'Kelly Engineering Center'; 
         }
         break;
       case ('DocumentReference(GEOLOC/rHjy81bXaT3LM5ENIaH0)'):
         {
-          WKO.assets = 'OSU Foundation Center';
-          print('OSU Foundation Center');
+          WKO.assets = 'OSU Foundation Center'; 
         }
         break;
       case ('DocumentReference(GEOLOC/RwIJdGEHDFcQS8jmuddR)'):
         {
           WKO.assets = 'OSU Botany Farm';
-          print('OSU Botany Farm');
         }
         break;
       case ('DocumentReference(GEOLOC/8Pd9jydcDhmTpwkBNrMS)'):
         {
           WKO.assets = 'Johnson Hall';
-          print('Johnson Hall');
         }
         break;
       default:
         {
           WKO.assets = 'Default Location';
-          print('Broken');
         }
         break;
     }
@@ -511,31 +506,26 @@ class _HomeScreenState extends State<HomeScreen>
       case ('DocumentReference(EMP/0000)'):
         {
           WKO.person = 'Unassigned';
-          print('Unassigned');
         }
         break;
       case ('DocumentReference(EMP/HhB68yRmzFGbRnJf2GHP)'):
         {
           WKO.person = 'Hunter Christensen';
-          print('Hunter C');
         }
         break;
       case ('DocumentReference(EMP/YuDRVKSwtaWEz00cXiPA)'):
         {
           WKO.person = 'Branden Holloway';
-          print('Branden H');
         }
         break;
       case ('DocumentReference(EMP/Z3hNoEArVupMxARPCe3R)'):
         {
           WKO.person = 'Spencer Big';
-          print('Spencer B');
         }
         break;
       default:
         {
           WKO.person = 'Default person';
-          print('Broken');
         }
         break;
     }

@@ -7,6 +7,7 @@ import 'package:geolocator/geolocator.dart';
 import 'main.dart';
 import 'services/location.dart';
 
+
 class AlwaysDisabledFocusNode extends FocusNode {
   @override
   bool get hasFocus => false;
@@ -78,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
         resizeToAvoidBottomPadding: false,
         body: Center(
           child: Container(
-            color: Color(0xFFD6D6D6),
+            color: Colors.white,
             child: Padding(
                 padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
                 child: Column(

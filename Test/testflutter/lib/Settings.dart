@@ -23,7 +23,7 @@ class _SettingsPage extends State<SettingsPage> {
                   ),
                 )),
         centerTitle: true,
-        backgroundColor: Color(0xFFE0E0E0),
+        backgroundColor: Colors.grey.shade200,
         title: Text('Settings', style: TextStyle(color: Colors.black),),
       ),
       //Grad an instance of the Firestore database
@@ -47,9 +47,7 @@ class _SettingsPage extends State<SettingsPage> {
 
   //Display data taken from firestore
   Widget _buildListItem(BuildContext context, DocumentSnapshot document) {
-    return Card(
-      shadowColor: Colors.grey,
-      child: Column(
+    return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(padding: EdgeInsets.fromLTRB(0, 0, 0, 15)),
@@ -72,7 +70,6 @@ class _SettingsPage extends State<SettingsPage> {
             Padding(padding: EdgeInsets.all(5)),
           
         ],
-      ),
     );
   }
 }
