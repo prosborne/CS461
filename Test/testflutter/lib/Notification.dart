@@ -92,7 +92,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 return Column(children: [
                   if (snapshot.data.docs[index]['Personnel'].toString() ==
                       'DocumentReference(EMP/0000)' &&
-                      snapshot.data.docs[index]['Asset'].toString() == 'DocumentReference(GEOLOC/${closestBuilding.buildingId.toString()})')
+                      snapshot.data.docs[index]['Asset'].toString() == 'DocumentReference(GEOLOC/${closestBuilding[0].buildingId.toString()})')
                     GestureDetector(
                         onTap: () {
                           //Set assets to pushed to next screen

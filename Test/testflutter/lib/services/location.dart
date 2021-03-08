@@ -13,11 +13,9 @@ Future <void> getCurrentLocation()async{
 }
 
 Future <void> loadBuildings()async{
-  final firestoreInstance = await FirebaseFirestore.instance.collection('GEOLOC2').get();
+  final firestoreInstance = await FirebaseFirestore.instance.collection('GEOFENCE').get();
   firestoreInstance.docs.forEach((element) {
-    print(element.id);
     geolocs.add(Geoloc(element.data(), element.id));
-    print(element.data().values);
   });
 }
 
@@ -25,20 +23,16 @@ Future <void> getClosestBuilding()async{
   double distanceToClosestObject = double.infinity;
   double tmp;
   int index = 0;
-  print('Getting Closest Building...');
-  print(geolocs.length);
-  print('${currentPosition.latitude}, ${currentPosition.longitude}');
   if(currentPosition != null && geolocs.length != 0){
     for(int i = 0; i < geolocs.length; i++){
-
+      print('checking isInside');
       if(geolocs[i].isInside(Point([currentPosition.latitude, currentPosition.longitude])) == true){
-        closestBuilding = geolocs[i];
-        print('Inside');
+        closestBuilding.add(geolocs[i]);
         return;
       }else{
-        print('here');
+        print('checking Distance');
         tmp = geolocs[i].distance(Point([currentPosition.latitude, currentPosition.longitude]));
-        print('here');
+        
         if(tmp < distanceToClosestObject){
           distanceToClosestObject = tmp;
           index = i;
@@ -46,24 +40,7 @@ Future <void> getClosestBuilding()async{
       }
     }
   }
-  closestBuilding = geolocs[index];
-  print(tmp);
-
-  // double distance = double.infinity;
-  // int index;
-  // if(currentPosition != null && geolocs.length != 0){
-  //   for(int i = 0; i < geolocs.length; i++){
-  //     if(geolocs[i].latitude != null && geolocs[i].longitude != null){
-  //       double tmp = Geolocator.distanceBetween(currentPosition.latitude, currentPosition.longitude,
-  //                                                geolocs[i].latitude, geolocs[i].longitude);
-  //       if(tmp < distance){
-  //         distance = tmp;
-  //         index = i;
-  //       }
-  //     }
-  //   }
-  // }
-  // closestBuilding = geolocs[index];
+  closestBuilding.add(geolocs[index]);
 }
 
 class Geoloc {
@@ -87,17 +64,13 @@ class Geoloc {
       points.add(Point(data["Point4"]));
 
       for(int i = 0; i < points.length; i++){
-        print('${points[i].latitude}, ${points[i].longitude}');
       }
 
       if(points.length > 0){
         for(int i = 0; i < points.length; i++){
           lines.add(Line(p1: points[i % points.length], p2: points[(i + 1) % points.length]));
-          lines[i].printLine();
         }
       }
-      //this.latitude = data["Latitude"];
-      //this.longitude = data["Longitude"];
     }
 
     bool isInside(Point p1){
@@ -116,8 +89,6 @@ class Geoloc {
         double yMax = this.lines[i].maxLatitude;
         int direction = this.lines[i].direction;
 
-        //print('${a * x + b * y + c}');
-        print('x: $x, xMax: $xMax');
         if(x < xMax){
           if(direction == 1 || direction == 3 || direction == 5){
             if(y <= yMax && y > yMin){
@@ -149,7 +120,6 @@ class Geoloc {
           }
         }
       }
-      print('tmp1: $tmp1, tmp2: $tmp2');
       tmp1 = tmp1 % 2;
       tmp2 = tmp2 % 2;
 
@@ -159,17 +129,15 @@ class Geoloc {
 
   double distance(Point currentLocation){
     int l = 0;
-    print(l);
     l++;
     if(currentLocation != null && lines.length > 0){
-      print(l);
       l++;
       List<Point> closestLinePoints = [];
       List<double> distanceToLine = [];
       int minI = 0;
       for(int i = 0; i < lines.length; i++){
-        print(l);
         l++;
+        print(_lineDistance(lines[i], currentLocation).latitude);
         closestLinePoints.add(_lineDistance(lines[i], currentLocation));
         distanceToLine.add(_pointDistance(closestLinePoints[i], currentLocation));
         if(distanceToLine[i] != null){
@@ -177,10 +145,8 @@ class Geoloc {
             minI = i;
         }
       }
-      print('$l here');
       l++;
       double tmp = Geolocator.distanceBetween(currentLocation.latitude, currentLocation.longitude, closestLinePoints[minI].latitude, closestLinePoints[minI].longitude); 
-      print('Closest point: ${closestLinePoints[minI].longitude}, ${closestLinePoints[minI].latitude}, $tmp');
       return tmp;
     }else{
       return null;
@@ -190,7 +156,6 @@ class Geoloc {
   Point _lineDistance(Line line, Point currentLocation){
     if(line != null && currentLocation != null){
       int r = 0;
-      print('start _lineDistance $r');
       r++;
 
       double a = line.a;
@@ -200,7 +165,7 @@ class Geoloc {
 
       if(a != 0 && b != 0){
         p = currentLocation.latitude - (b/a) * currentLocation.longitude;
-        x = (p + (c/b)) / ((pow(a, 2)) + pow(b, 2))/(-b*a);
+        x = (p + (c/b)) / ((pow(a, 2) + pow(b, 2))/(-b*a));
         y = (b/a)*x + p;
       }else{
         if(a == 0){
@@ -211,31 +176,34 @@ class Geoloc {
           y = currentLocation.latitude;
         }
       }
-
-      print('_lineDistance $r');
       r++;
-
       if(y <= line.maxLatitude && y >= line.minLatitude){
         if(x <= line.maxLongitude && x >= line.minLongitude){
-          return Point([latitude, longitude]);
+          return Point([y, x]);
         }
       }
-      print('_lineDistance $r');
       r++;
       double p1Dist = _pointDistance(line.p1, currentLocation);
       double p2Dist = _pointDistance(line.p2, currentLocation);
 
-      if(p1Dist < p2Dist) return line.p1;
-      else if(p1Dist < p2Dist) return line.p2;
-      else if(p1Dist == p2Dist) return line.p1;
+      if(p1Dist < p2Dist){
+        return line.p1;
+      }
+      else if(p1Dist > p2Dist){
+        return line.p2;
+      }
+      else if(p1Dist == p2Dist){
+        return line.p1;
+      }
     }
     return null;
 
   }
 
   double _pointDistance(Point p1, Point p2){
-    if(p1 == null || p2 == null)
+    if(p1 == null || p2 == null){
       return null;
+    }
     else
       return Geolocator.distanceBetween(p1.latitude, p1.longitude, p2.latitude, p2.longitude);
   }

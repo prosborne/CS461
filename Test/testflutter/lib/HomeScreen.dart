@@ -134,7 +134,7 @@ class _HomeScreenState extends State<HomeScreen>
 
         if (_index == 2) {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => MyTimer()));
+              context, MaterialPageRoute(builder: (context) => MyTimer(user: null,)));
         }
         if (_index == 3) {
           Navigator.push(

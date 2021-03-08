@@ -18,7 +18,7 @@ void main() async {
 
 List<Geoloc> geolocs = [];
 Position currentPosition;
-Geoloc closestBuilding;
+List<Geoloc> closestBuilding = [];
 
 class MyApp extends StatefulWidget {
   // This widget is the root of your application.
@@ -31,10 +31,14 @@ class _MyAppState extends State<MyApp> {
   void initState(){
     _startup();
     if(currentPosition != null && geolocs.length > 0){
+      print('...getClosestBuilding');
       getClosestBuilding();
-      print(closestBuilding);
+      //print(closestBuilding);
     }
     super.initState();
+    if(currentPosition != null){
+      print('finished');
+    }
   }
 
   @override
@@ -44,18 +48,21 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.red,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: CircularProgressIndicator()
-      //home: LoginScreen(),
+      //home: CircularProgressIndicator()
+      home: LoginScreen(),
     );
   }
 
   Future<void> _startup()async{ 
+    print('...loadBuilding');
     await loadBuildings();
     print(geolocs.length);
     print(geolocs[0].description);
+    print('..getting location');
     await getCurrentLocation();
     print(currentPosition.latitude.toString());
+    print('..getting closest building');
     await getClosestBuilding();
-    print(closestBuilding.description);
+    print(closestBuilding[0].buildingId.toString());
   }
 }
