@@ -56,11 +56,8 @@ class _MyAppState extends State<MyApp> {
   Future<void> _startup()async{ 
     print('...loadBuilding');
     await loadBuildings();
-    print(geolocs.length);
-    print(geolocs[0].description);
     print('..getting location');
     await getCurrentLocation();
-    print(currentPosition.latitude.toString());
     print('..getting closest building');
     await getClosestBuilding();
     print(closestBuilding[0].buildingId.toString());

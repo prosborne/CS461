@@ -27,6 +27,7 @@ Future <void> getClosestBuilding()async{
     for(int i = 0; i < geolocs.length; i++){
       print('checking isInside');
       if(geolocs[i].isInside(Point([currentPosition.latitude, currentPosition.longitude])) == true){
+        print('inside ${geolocs[i].description}');
         closestBuilding.add(geolocs[i]);
         return;
       }else{
@@ -41,6 +42,7 @@ Future <void> getClosestBuilding()async{
     }
   }
   closestBuilding.add(geolocs[index]);
+  print('Closest Building is ${geolocs[index].description} at $distanceToClosestObject meters away');
 }
 
 class Geoloc {
