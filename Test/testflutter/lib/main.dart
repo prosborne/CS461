@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,10 +6,7 @@ import 'package:flutter/services.dart';
 
 
 import 'services/location.dart';
-import 'services/location.dart';
-import 'services/location.dart';
-import 'services/location.dart';
-import 'dart:io';
+
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

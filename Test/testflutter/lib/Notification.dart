@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_conditional_rendering/flutter_conditional_rendering.dart';
 
 import 'package:testflutter/WKOView.dart';
 

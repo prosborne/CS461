@@ -1,8 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:geolocator/geolocator.dart';
 import '../main.dart';
-import 'dart:io';
+
 
 Future <void> getCurrentLocation()async{
   final Position geolocation = 
@@ -25,8 +24,7 @@ Future <void> getClosestBuilding()async{
   if(currentPosition != null && geolocs.length != 0){
     for(int i = 0; i < geolocs.length; i++){
       if(geolocs[i].latitude != null && geolocs[i].longitude != null){
-        double tmp = Geolocator.distanceBetween(currentPosition.latitude, currentPosition.longitude,
-                                                 geolocs[i].latitude, geolocs[i].longitude);
+        double tmp = Geolocator.distanceBetween(currentPosition.latitude, currentPosition.longitude, geolocs[i].latitude, geolocs[i].longitude);
         if(tmp < distance){
           distance = tmp;
           index = i;
