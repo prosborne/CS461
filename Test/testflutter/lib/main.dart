@@ -60,6 +60,6 @@ class _MyAppState extends State<MyApp> {
     await getCurrentLocation();
   //  print(currentPosition.latitude.toString());
     await getClosestBuilding();
-  //  print(closestBuilding.description);
+    print(closestBuilding.description);
   }
 }

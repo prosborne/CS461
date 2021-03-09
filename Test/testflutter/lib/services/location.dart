@@ -25,8 +25,10 @@ Future <void> getClosestBuilding()async{
   if(currentPosition != null && geolocs.length != 0){
     for(int i = 0; i < geolocs.length; i++){
       if(geolocs[i].latitude != null && geolocs[i].longitude != null){
+        print(geolocs[i].description);
         double tmp = Geolocator.distanceBetween(currentPosition.latitude, currentPosition.longitude,
                                                  geolocs[i].latitude, geolocs[i].longitude);
+        print('${geolocs[i].description}, $tmp');
         if(tmp < distance){
           distance = tmp;
           index = i;
@@ -35,6 +37,7 @@ Future <void> getClosestBuilding()async{
     }
   }
   closestBuilding = geolocs[index];
+
 }
 
 class Geoloc {
