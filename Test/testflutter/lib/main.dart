@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:testflutter/Login.dart';
 import 'package:flutter/services.dart';
 
+
 import 'services/location.dart';
 import 'services/location.dart';
 import 'services/location.dart';
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
     _startup();
     if(currentPosition != null && geolocs.length > 0){
       getClosestBuilding();
-      print(closestBuilding);
+    //  print(closestBuilding);
     }
     super.initState();
   }
@@ -55,10 +56,10 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> _startup()async{ 
     await loadBuildings();
-    print(geolocs.length);
+  //  print(geolocs.length);
     await getCurrentLocation();
-    print(currentPosition.latitude.toString());
+  //  print(currentPosition.latitude.toString());
     await getClosestBuilding();
-    print(closestBuilding.description);
+  //  print(closestBuilding.description);
   }
 }

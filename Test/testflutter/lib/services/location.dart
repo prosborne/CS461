@@ -13,9 +13,9 @@ Future <void> getCurrentLocation()async{
 Future <void> loadBuildings()async{
   final firestoreInstance = await FirebaseFirestore.instance.collection('GEOLOC').get();
   firestoreInstance.docs.forEach((element) {
-    print(element.id);
+    //print(element.id);
     geolocs.add(Geoloc(element.data(), element.id));
-    print(element.data().values);
+    //print(element.data().values);
   });
 }
 

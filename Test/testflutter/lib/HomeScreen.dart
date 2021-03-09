@@ -74,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _tabItems() {
     return Scaffold(
       appBar: AppBar(
+        primary: true,
         leading: Icon(
           Icons.search,
           color: Colors.black,
