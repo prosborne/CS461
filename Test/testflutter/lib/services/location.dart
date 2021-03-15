@@ -7,12 +7,12 @@ import '../main.dart';
 import 'dart:io';
 
 Future <void> getCurrentLocation()async{
-  final Position geolocation = 
-  await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
+  final Position geolocation = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.best);
   currentPosition = geolocation;
 }
 
 Future <void> loadBuildings()async{
+  await getCurrentLocation();
   final firestoreInstance = await FirebaseFirestore.instance.collection('GEOFENCE').get();
   firestoreInstance.docs.forEach((element) {
     geolocs.add(Geoloc(element.data(), element.id));
@@ -21,7 +21,7 @@ Future <void> loadBuildings()async{
 
 Future <void> getClosestBuilding()async{
   double distanceToClosestObject = double.infinity;
-  double tmp;
+  double closestDistance;
   int index = 0;
   if(currentPosition != null && geolocs.length != 0){
     for(int i = 0; i < geolocs.length; i++){
@@ -32,10 +32,10 @@ Future <void> getClosestBuilding()async{
         return;
       }else{
         print('checking Distance');
-        tmp = geolocs[i].distance(Point([currentPosition.latitude, currentPosition.longitude]));
-        
-        if(tmp < distanceToClosestObject){
-          distanceToClosestObject = tmp;
+        closestDistance = geolocs[i].distance(Point([currentPosition.latitude, currentPosition.longitude]));
+
+        if(closestDistance < distanceToClosestObject){
+          distanceToClosestObject = closestDistance;
           index = i;
         }
       }
@@ -52,7 +52,6 @@ class Geoloc {
     
     List<Point> points = [];
     List<Line> lines = [];
-    //DateTime lastUpdatedDate;
     double latitude;
     double longitude;
 
@@ -65,9 +64,6 @@ class Geoloc {
       points.add(Point(data["Point3"]));
       points.add(Point(data["Point4"]));
 
-      for(int i = 0; i < points.length; i++){
-      }
-
       if(points.length > 0){
         for(int i = 0; i < points.length; i++){
           lines.add(Line(p1: points[i % points.length], p2: points[(i + 1) % points.length]));
@@ -75,8 +71,23 @@ class Geoloc {
       }
     }
 
+    // is_inside can determine if the point home is within the object.
+    // the values of tmp1 and tmp2 are the counters for determining how many lines the point is
+    // to the left of and right of respectively
+    // The process of determining left and right is the same, just the inequalities are flipped
+    // Left side:
+    // loop through all the lines defined in obj
+    // determine if the x coordinate for the point is less than the maximum value of x for the current line
+    // use the direction to determine which inequality to use, if the line is running lower to higher the value
+    // of ax+by+c needs to be greater than or equal to 0 to determine if the point is to the left,
+    // if the line runs higher to lower then the inequality flips to less than or equal to
+    // if either of this is true then tmp1 is incremented
+    //
+    // The right side is determined the same
+    // if both tmp1 and tmp2 are odd, is_inside returns true indicating the point is inside the object
+    // if they are unequal, zero or even then the point is outside the object
     bool isInside(Point p1){
-      int tmp1 = 0, tmp2 = 0;
+      int left = 0, right = 0;
       double x = p1.longitude;
       double y = p1.latitude;
 
@@ -91,64 +102,60 @@ class Geoloc {
         double yMax = this.lines[i].maxLatitude;
         int direction = this.lines[i].direction;
 
+        //check if user to the left of current line
         if(x < xMax){
           if(direction == 1 || direction == 3 || direction == 5){
             if(y <= yMax && y > yMin){
               if((a * x + b * y + c) >= 0){
-                tmp1++;
+                left++;
               }
             }
           }else if(direction == 2 || direction == 4 || direction == 6){
             if(y < yMax && y >= yMin){
               if((a * x + b * y + c) <= 0){
-                tmp1++;
+                left++;
               }
             }
           }
         }
+        //check if user is to the right of current line
         if(x > xMin){
           if(direction == 1 || direction == 3 || direction == 5){
             if(y <= yMax && y > yMin){
               if((a * x + b * y + c) <= 0){
-                tmp2++;
+                right++;
               }
             }
           }else if(direction == 2 || direction == 4 || direction == 6){
             if(y < yMax && y >= yMin){
               if((a * x + b * y + c) >= 0){
-                tmp2++;
+                right++;
               }
             }
           }
         }
       }
-      tmp1 = tmp1 % 2;
-      tmp2 = tmp2 % 2;
+      left = left % 2;
+      right = right % 2;
 
-      if(tmp1 == 1 && tmp2 == 1) return true;
+      if(left == 1 && right == 1) return true;
       else return false;
     }
 
   double distance(Point currentLocation){
-    int l = 0;
-    l++;
     if(currentLocation != null && lines.length > 0){
-      l++;
       List<Point> closestLinePoints = [];
       List<double> distanceToLine = [];
-      int minI = 0;
+      int minIndex = 0;
       for(int i = 0; i < lines.length; i++){
-        l++;
-        print(_lineDistance(lines[i], currentLocation).latitude);
         closestLinePoints.add(_lineDistance(lines[i], currentLocation));
         distanceToLine.add(_pointDistance(closestLinePoints[i], currentLocation));
         if(distanceToLine[i] != null){
-          if(distanceToLine[i] < distanceToLine[minI]) 
-            minI = i;
+          if(distanceToLine[i] < distanceToLine[minIndex]) 
+            minIndex = i;
         }
       }
-      l++;
-      double tmp = Geolocator.distanceBetween(currentLocation.latitude, currentLocation.longitude, closestLinePoints[minI].latitude, closestLinePoints[minI].longitude); 
+      double tmp = Geolocator.distanceBetween(currentLocation.latitude, currentLocation.longitude, closestLinePoints[minIndex].latitude, closestLinePoints[minIndex].longitude); 
       return tmp;
     }else{
       return null;
@@ -246,6 +253,19 @@ class Line{
     print('direction: ${this.direction}\n');
   }
 
+  // get_direction will use the values in p1 and p2 to determine the direction the line is going
+  // the actual direction is irrelevent but it needs to be uniform in order to define the corners of the
+  // object correctly. Otherwise, if the point is parallel with a corner, the program will not be able to
+  // determine if the point is inside or outside the object.
+  // the return values are as follows:
+  
+  //  0 - horizontal line
+  //  1 - diagonal left to right and lower to higher
+  //  2 - diagonal left to right and higher to lower
+  //  3 - diagonal right to left and lower to higher
+  //  4 - diagonal right to left and higher to lower
+  //  5 - vertical line running down
+  //  6 - vertical line running up
   int getDirection(Point p1, Point p2){
     if(p1.longitude < p2.longitude){
       if(p1.latitude < p2.latitude) return 1;

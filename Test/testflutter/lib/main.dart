@@ -30,15 +30,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState(){
     _startup();
-    if(currentPosition != null && geolocs.length > 0){
-      print('...getClosestBuilding');
-      getClosestBuilding();
-      //print(closestBuilding);
-    }
+    // if(currentPosition != null && geolocs.length > 0){
+    //   print('...getClosestBuilding');
+    //   getClosestBuilding();
+    //   //print(closestBuilding);
+    // }
     super.initState();
-    if(currentPosition != null){
-      print('finished');
-    }
+    // if(currentPosition != null){
+    //   print('finished');
+    // }
   }
 
   @override
@@ -54,10 +54,10 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _startup()async{ 
-    print('...loadBuilding');
     await loadBuildings();
+    print('...loadBuilding');
     print('..getting location');
-    await getCurrentLocation();
+    // await getCurrentLocation();
     print('..getting closest building');
     await getClosestBuilding();
     print(closestBuilding[0].buildingId.toString());
