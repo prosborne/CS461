@@ -7,7 +7,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPage extends State<SettingsPage> {
-  bool isSwitched = false;
+  bool notificationStatus = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,15 +82,14 @@ class _SettingsPage extends State<SettingsPage> {
                 textAlign: TextAlign.left,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
             Switch(
-              value: isSwitched,
+              value: notificationStatus,
               onChanged: (value) {
                 setState(() {
-                  isSwitched = value;
-                  print(isSwitched);
+                  notificationStatus = value;
                 });
               },
-              activeTrackColor: Colors.lightGreenAccent,
-              activeColor: Colors.green,
+              activeTrackColor: Colors.redAccent,
+              activeColor: Colors.red,
             ),
           ]),
         ),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:testflutter/HomeScreen.dart';
-import 'package:testflutter/Login.dart';
 import 'package:testflutter/Notification.dart';
 
 class MyTimer extends StatefulWidget {
@@ -19,9 +18,9 @@ class _MyTimerState extends State<MyTimer> {
 
   final StopWatchTimer _stopWatchTimer = StopWatchTimer(
     isLapHours: true,
-    onChange: (value) => print('onChange $value'),
-    onChangeRawSecond: (value) => print('onChangeRawSecond $value'),
-    onChangeRawMinute: (value) => print('onChangeRawMinute $value'),
+    // onChange: (value) => print('onChange $value'),
+    // onChangeRawSecond: (value) => print('onChangeRawSecond $value'),
+    // onChangeRawMinute: (value) => print('onChangeRawMinute $value'),
   );
 
   final _scrollController = ScrollController();
@@ -29,11 +28,11 @@ class _MyTimerState extends State<MyTimer> {
   @override
   void initState() {
     super.initState();
-    _stopWatchTimer.rawTime.listen((value) =>
-        print('rawTime $value ${StopWatchTimer.getDisplayTime(value)}'));
-    _stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
-    _stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
-    _stopWatchTimer.records.listen((value) => print('records $value'));
+    //_stopWatchTimer.rawTime.listen((value) =>
+    //    print('rawTime $value ${StopWatchTimer.getDisplayTime(value)}'));
+    //_stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
+    //_stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
+    //_stopWatchTimer.records.listen((value) => print('records $value'));
   }
 
   @override
@@ -119,12 +118,12 @@ class _MyTimerState extends State<MyTimer> {
                     if (value.isEmpty) {
                       return Container();
                     }
-                    Future.delayed(const Duration(milliseconds: 100), () {
-                      _scrollController.animateTo(
-                          _scrollController.position.maxScrollExtent,
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeOut);
-                    });
+                    // Future.delayed(const Duration(milliseconds: 100), () {
+                    //   _scrollController.animateTo(
+                    //       _scrollController.position.maxScrollExtent,
+                    //       duration: const Duration(milliseconds: 200),
+                    //       curve: Curves.easeOut);
+                    // });
                     print('Listen records. $value');
                     return ListView.builder(
                       controller: _scrollController,

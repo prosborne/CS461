@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:geolocator/geolocator.dart';
@@ -7,10 +6,7 @@ import 'package:flutter/services.dart';
 
 
 import 'services/location.dart';
-import 'services/location.dart';
-import 'services/location.dart';
-import 'services/location.dart';
-import 'dart:io';
+import 'DataModels/Geoloc.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -23,6 +19,7 @@ void main() async {
 }
 
 List<Geoloc> geolocs = [];
+bool geofence = true;
 Position currentPosition;
 Geoloc closestBuilding;
 
@@ -54,12 +51,14 @@ class _MyAppState extends State<MyApp> {
     );
   }
 
-  Future<void> _startup()async{ 
+  Future<void> _startup()async{
     await loadBuildings();
   //  print(geolocs.length);
     await getCurrentLocation();
   //  print(currentPosition.latitude.toString());
+    print('${currentPosition.latitude}, ${currentPosition.longitude}');
     await getClosestBuilding();
     print(closestBuilding.description);
+    print('${closestBuilding.latitude}, ${closestBuilding.longitude}');
   }
 }
