@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
 
-
-
-
-
-class WKOView extends StatelessWidget {
-  
+class WKOView extends StatelessWidget { 
   final String assets;
   final String descript;
   final DateTime timedue;
@@ -46,6 +42,8 @@ class WKOView extends StatelessWidget {
           Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
+              if(closestBuilding != null && assets == closestBuilding.description)
+                distanceWidget(),
               ListTile(
                 title:
                     Text('ID#:', style: TextStyle(fontWeight: FontWeight.bold)),
@@ -80,7 +78,23 @@ class WKOView extends StatelessWidget {
           )
         ],
       ),
-      
     );
+  }
+
+  Widget distanceWidget(){
+    print(isInside);
+    if(isInside == true){
+      return ListTile(
+              title: 
+                Text('Distance: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(' Inside'),
+              );
+    }else{
+      return ListTile(
+              title: 
+                Text('Distance: ', style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(' ${(distance * 3.28084).round()} ft'),
+              );
+    }
   }
 }

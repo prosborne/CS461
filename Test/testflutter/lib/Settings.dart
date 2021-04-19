@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'main.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -8,8 +9,14 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPage extends State<SettingsPage> {
   bool notificationStatus = true;
+  String display;
   @override
   Widget build(BuildContext context) {
+    if(geofence == true){
+      display = 'Geofence';
+    }else{
+      display = 'Radius';
+    }
     return Scaffold(
       appBar: AppBar(
         primary: true,
@@ -91,8 +98,28 @@ class _SettingsPage extends State<SettingsPage> {
               activeTrackColor: Colors.redAccent,
               activeColor: Colors.red,
             ),
+            
           ]),
         ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Row(children: [
+            Text(display,
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            Switch(
+              value: geofence,
+              onChanged: (value) {
+                setState(() {
+                  display = 'Radius';
+                  geofence = false;
+                });
+              },
+              activeTrackColor: Colors.redAccent,
+              activeColor: Colors.red,
+            ),   
+          ]),
+        )
       ],
     );
   }

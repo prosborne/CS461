@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:testflutter/HomeScreen.dart';
+import 'main.dart';
+import 'services/geofence.dart';
+import 'services/location.dart';
 import 'package:testflutter/Notification.dart';
 
 class MyTimer extends StatefulWidget {
@@ -25,15 +28,15 @@ class _MyTimerState extends State<MyTimer> {
 
   final _scrollController = ScrollController();
 
-  @override
-  void initState() {
-    super.initState();
-    //_stopWatchTimer.rawTime.listen((value) =>
-    //    print('rawTime $value ${StopWatchTimer.getDisplayTime(value)}'));
-    //_stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
-    //_stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
-    //_stopWatchTimer.records.listen((value) => print('records $value'));
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   //_stopWatchTimer.rawTime.listen((value) =>
+  //   //    print('rawTime $value ${StopWatchTimer.getDisplayTime(value)}'));
+  //   //_stopWatchTimer.minuteTime.listen((value) => print('minuteTime $value'));
+  //   //_stopWatchTimer.secondTime.listen((value) => print('secondTime $value'));
+  //   //_stopWatchTimer.records.listen((value) => print('records $value'));
+  // }
 
   @override
   void dispose() async {
@@ -225,6 +228,10 @@ class _MyTimerState extends State<MyTimer> {
                             color: Colors.green,
                             shape: const StadiumBorder(),
                             onPressed: () async {
+                              await loadNotificationInfo();
+                              setState(() {
+                                print(closestBuilding.description);
+                              });
                               showOverlayNotification((context) {
                                 return Card(
                                   margin:
@@ -264,6 +271,7 @@ class _MyTimerState extends State<MyTimer> {
                                   ),
                                 );
                               }, duration: Duration(milliseconds: 4000));
+                              // }
                             },
                             child: const Text(
                               'Submit',
@@ -282,4 +290,15 @@ class _MyTimerState extends State<MyTimer> {
       ),
     ));
   }
+}
+
+Future<void> loadNotificationInfo()async{
+  await loadBuildings();
+//  print(geolocs.length);
+  await getCurrentLocation();
+//  print(currentPosition.latitude.toString());
+  print('${currentPosition.latitude}, ${currentPosition.longitude}');
+  await getClosestBuilding();
+  print(closestBuilding.description);
+  //print('${closestBuilding.latitude}, ${closestBuilding.longitude}');
 }

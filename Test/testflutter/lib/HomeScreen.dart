@@ -7,6 +7,7 @@ import 'package:testflutter/Settings.dart';
 import 'package:testflutter/WKOView.dart';
 import 'package:testflutter/Timer.dart';
 import 'package:testflutter/Notification.dart';
+import 'package:testflutter/main.dart';
 
 
 final databaseReference = FirebaseFirestore.instance;
@@ -70,6 +71,11 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
+  void startup()async{
+      await loadNotificationInfo();
+      clickNotification();
+  }
+
   Widget _tabItems() {
     return Scaffold(
       appBar: AppBar(
@@ -83,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen>
               padding: EdgeInsets.only(right: 20.0),
               child: GestureDetector(
                 onTap: () {
-                  clickNotification();
+                  startup();
                 },
                 child: Icon(
                   Icons.notifications,

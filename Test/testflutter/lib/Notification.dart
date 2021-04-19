@@ -79,7 +79,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
   Widget _unassignedWKO() {
     //databaseReference.collection('WKO').snapshots().listen((snapshot){});
-
+    if(distance < maxDistance){
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection('WKO').snapshots(),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -87,6 +87,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
           return ListView.builder(
               itemCount: snapshot.data.docs.length,
               itemBuilder: (context, index) {
+                print('DocumentReference(GEOLOC/${closestBuilding.buildingId.toString()})');
+
                 return Column(children: [
                   if (snapshot.data.docs[index]['Personnel'].toString() ==
                       'DocumentReference(EMP/0000)' &&
@@ -141,14 +143,21 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             ),
                           ),
                         ))
-                ]);
+                  ]);
               });
         });
+    }else{
+      return Center(
+        child: Container(
+          child: Text('No Unassigned Work Orders Within Minimum Distance')
+        )
+      );
+    }
   }
 
   void _assetChecker(String x) {
     switch (x) {
-      case ('DocumentReference(GEOLOC/wrWnYGNTwRwasNXwmMtS)'):
+      case ('DocumentReference(GEOLOC/q9ncU6rLbLrBVIGCEFPI)'):
         {
           WKO.assets = 'Kelly Engineering Center';
           print('kelly Engineering Center');

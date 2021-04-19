@@ -30,7 +30,7 @@ Future <void> loadBuildings()async{
 
 Future <void> getClosestBuilding()async{
   if(geofence == false){
-    double distance = double.infinity;
+    distance = double.infinity;
     int index;
     if(currentPosition != null && geolocs.length != 0){
       for(int i = 0; i < geolocs.length; i++){
@@ -44,15 +44,17 @@ Future <void> getClosestBuilding()async{
         }
       }
     }
+
     closestBuilding = geolocs[index];
 }else{
-  double distanceToClosestObject = double.infinity;
+  distance = double.infinity;
   double closestDistance;
   int index = 0;
   if(currentPosition != null && geolocs.length != 0){
     for(int i = 0; i < geolocs.length; i++){
-      print('checking isInside');
+      //print('checking isInside');
       if(geolocs[i].isInside(Point([currentPosition.latitude, currentPosition.longitude])) == true){
+        isInside = true;
         print('inside ${geolocs[i].description}');
         closestBuilding = geolocs[i];
         return;
@@ -60,14 +62,14 @@ Future <void> getClosestBuilding()async{
         print('checking Distance');
         closestDistance = geolocs[i].distance(Point([currentPosition.latitude, currentPosition.longitude]));
 
-        if(closestDistance < distanceToClosestObject){
-          distanceToClosestObject = closestDistance;
+        if(closestDistance < distance){
+          distance = closestDistance;
           index = i;
         }
       }
     }
   }
   closestBuilding = geolocs[index];
-  print('Closest Building is ${geolocs[index].description} at $distanceToClosestObject meters away');
+  print('Closest Building is ${geolocs[index].description} at $distance meters away');
   }
 }

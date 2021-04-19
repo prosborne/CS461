@@ -20,6 +20,9 @@ void main() async {
 
 List<Geoloc> geolocs = [];
 bool geofence = true;
+bool isInside = false;
+double distance;
+double maxDistance = 100;
 Position currentPosition;
 Geoloc closestBuilding;
 
@@ -31,16 +34,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
-  void initState(){
-    _startup();
-    if(currentPosition != null && geolocs.length > 0){
-      getClosestBuilding();
-    //  print(closestBuilding);
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
@@ -49,16 +42,5 @@ class _MyAppState extends State<MyApp> {
       ),
       home: LoginScreen(),
     );
-  }
-
-  Future<void> _startup()async{
-    await loadBuildings();
-  //  print(geolocs.length);
-    await getCurrentLocation();
-  //  print(currentPosition.latitude.toString());
-    print('${currentPosition.latitude}, ${currentPosition.longitude}');
-    await getClosestBuilding();
-    print(closestBuilding.description);
-    print('${closestBuilding.latitude}, ${closestBuilding.longitude}');
   }
 }
